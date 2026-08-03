@@ -8,58 +8,84 @@ public class Movement : Input {
     [Header("Walk Stats")]
     [SerializeField] float walkSpeed;
     InputAction moveAction;
-    Vector3 moveDirection;
+    InputAction jumpAction;
 
     [Header("Jump Stats")]
-    [SerializeField] float jumpSpeed;
-    [SerializeField] float holdJumpTime;
+    [SerializeField] float maxJumpHeight;
     [SerializeField] float gravity;
-
     Rigidbody2D rigidBody;
 
+    bool isMoving;
 
-    bool ignore;
     void OnDisable() {
         moveAction.performed -= Move;
         moveAction.canceled -= StopMoving;
+
+        jumpAction.performed -= Jump;
+        jumpAction.canceled -= StopJumping;
     }
 
     void Start() {
         SetMoveAction();
         body = GetComponentInChildren<Grounded>();
+        body.HitGround += HitGround;
 
-        moveDirection = Vector2.zero;
         rigidBody = GetComponent<Rigidbody2D>();
         rigidBody.gravityScale = gravity;
     }
 
     void Update() {
-        //transform.position += moveDirection * Time.deltaTime;
+        if (isMoving) {
+            int moveDirection = Mathf.RoundToInt(moveAction.ReadValue<Vector2>().x);
+            rigidBody.linearVelocityX = moveDirection * walkSpeed;
+        }
     }
-
 
     // EVENTS
     void Move(InputAction.CallbackContext context) {
-        moveDirection = context.ReadValue<Vector2>();
-        moveDirection.x *= walkSpeed;
+        int moveDirection = Mathf.RoundToInt(context.ReadValue<Vector2>().x);
 
-        if (moveDirection.y > 0) moveDirection.y *= jumpSpeed;
-        else moveDirection.y = 0;
+        if (moveDirection != 0) {
+            isMoving = true;
 
-        rigidBody.linearVelocityX = moveDirection.x;
-        if (body.isGrounded) rigidBody.linearVelocityY = moveDirection.y;
+            rigidBody.linearVelocityX = moveDirection * walkSpeed;
+        }
     }
 
     void StopMoving(InputAction.CallbackContext context) {
-        rigidBody.linearVelocity = new Vector2(0, rigidBody.linearVelocity.y * 0.5f);
+        int moveDirection = Mathf.RoundToInt(context.ReadValue<Vector2>().x);
+
+        if (moveDirection == 0) {
+            isMoving = false;
+            rigidBody.linearVelocityX = 0;
+        }
+    }
+
+    void Jump(InputAction.CallbackContext context) {
+        if (body.isGrounded) {
+            rigidBody.linearVelocityY = maxJumpHeight;
+        }
+    }
+
+
+    void StopJumping(InputAction.CallbackContext context) {
+        rigidBody.linearVelocityY *= 0.5f;
+    }
+
+    void HitGround() {
+        rigidBody.linearVelocityY = 0;
     }
 
     // SETTERS
     void SetMoveAction() {
         moveAction = InputManager.instance.GetAction(actionName, "Move");
+        jumpAction = InputManager.instance.GetAction(actionName, "Jump");
 
         moveAction.performed += Move;
         moveAction.canceled += StopMoving;
+
+        jumpAction.performed += Jump;
+        jumpAction.canceled += StopJumping;
     }
 
     // GETTERS
