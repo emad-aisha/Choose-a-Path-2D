@@ -30,6 +30,8 @@ public class HorizontalFacingDirectionManager : Input {
 
     void MoveVisualizer(InputAction.CallbackContext context) {
         float newDirection = context.ReadValue<Vector2>().x;
+        if (newDirection == 0) return;
+
         if (newDirection != xDirection) ChangeDirection?.Invoke();
         xDirection = Mathf.RoundToInt(newDirection);
     }

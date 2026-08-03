@@ -338,11 +338,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   followPercent: 0.5
   z: -9
-  yOffset: 1
   xOffset: 0.5
-  yLookOffset: 1
-  ySpeed: 9
   xSpeed: 9
+  yOffset: 1
+  ySpeed: 9
+  lookOffset: 10
   xDistance: 9
   yDistance: 4.8
   upperBound: {fileID: 1957782963}

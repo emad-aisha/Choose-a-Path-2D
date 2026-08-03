@@ -34,6 +34,7 @@ public class Attack : Input {
     }
 
     void MoveHitbox() {
+        if (hitBox.activeSelf) return; // dont change direction when shown
         hitBox.transform.position = new Vector3(PlayerManager.instance.GetTransform().position.x - HorizontalFacingDirectionManager.instance.GetDirection(), PlayerManager.instance.GetTransform().position.y);
     }
 
