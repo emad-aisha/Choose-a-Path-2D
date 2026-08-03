@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,17 +6,21 @@ using UnityEngine.InputSystem;
 public class Movement : Input {
     [Header("Move Stats")]
     [SerializeField] float walkSpeed;
-    [SerializeField] float jumpSpeed;
     InputAction moveAction;
-    InputAction jumpAction;
-    float stopJumpMod = 0.5f;
     bool isMoving;
+
+    [Header("Jump Stats")]
+    [SerializeField] float jumpSpeed;
+    [SerializeField] float coyoteTime;
+    float stopJumpMod = 0.5f;
+    InputAction jumpAction;
 
     [Header("Gravity")]
     [SerializeField] float maxGravity;
     [SerializeField] float gravity;
     [SerializeField] float gravityAcceleration;
     bool isJumping;
+    bool canJump = true;
 
     Rigidbody2D rigidBody;
     Grounded body;
@@ -24,6 +29,7 @@ public class Movement : Input {
         SetMoveAction();
         body = GetComponentInChildren<Grounded>();
         body.HitGround += HitGround;
+        body.LeftGround += LeftGround;
 
         rigidBody = GetComponent<Rigidbody2D>();
         rigidBody.gravityScale = gravity;
@@ -50,6 +56,7 @@ public class Movement : Input {
         jumpAction.canceled -= StopJumping;
 
         body.HitGround -= HitGround;
+        body.LeftGround -= LeftGround;
     }
 
     // MOVE
@@ -71,13 +78,26 @@ public class Movement : Input {
     // JUMP
     void Jump(InputAction.CallbackContext context) {
         isJumping = true;
-        if (body.isGrounded) { rigidBody.linearVelocityY = jumpSpeed; }
+        if (body.isGrounded || canJump) {
+            rigidBody.linearVelocityY = jumpSpeed;
+        }
     }
     void StopJumping(InputAction.CallbackContext context) {
         isJumping = false;
         rigidBody.linearVelocityY *= stopJumpMod;
     }
-    void HitGround() { rigidBody.gravityScale = gravity; }
+    void HitGround() {
+        rigidBody.gravityScale = gravity;
+        canJump = false;
+    }
+    void LeftGround() { if (!isJumping) StartCoroutine(CoyoteTime()); }
+
+    // HELPER -- 
+    IEnumerator CoyoteTime() {
+        canJump = true;
+        yield return new WaitForSeconds(coyoteTime);
+        canJump = false;
+    }
 
     // SETTERS ---
     void SetMoveAction() {
