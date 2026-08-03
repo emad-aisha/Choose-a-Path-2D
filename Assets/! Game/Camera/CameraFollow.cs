@@ -4,42 +4,56 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour {
     [Header("Basic Stats")]
     [SerializeField] float followPercent;
-    [SerializeField] float speed;
     [SerializeField] float z = -9;
-    [Header("Y Follow")]
-    [SerializeField] float yDistance;
     [SerializeField] float yOffset;
+
+    [Header("Speed")]
+    [SerializeField] float ySpeed;
+    [SerializeField] float xSpeed;
+
+    [Header("Bounds")]
+    [SerializeField] float xDistance;
+    [SerializeField] float yDistance;
+    [SerializeField] Transform upperBound;
+    [SerializeField] Transform lowerBound;
+    [SerializeField] Transform rightBound;
+    [SerializeField] Transform leftBound;
 
     Vector2 playerPosition;
     Vector2 position;
 
+    void Start() { playerPosition = PlayerManager.instance.GetTransform().position; }
+
     void FixedUpdate() {
-        ClampPlayer();
+        ClampHorizontal();
+        ClampVertical();
 
         position = Vector3.Lerp(transform.position, playerPosition, followPercent);
-        transform.position = Vector3.Lerp(transform.position, position, speed * Time.deltaTime);
+        float x = Vector3.Lerp(transform.position, position, xSpeed * Time.deltaTime).x;
+        float y = Vector3.Lerp(transform.position, position, ySpeed * Time.deltaTime).y;
+        position = new Vector3(x, y);
+
+        transform.position = position;
         transform.position = new Vector3(transform.position.x, transform.position.y, z);
     }
 
-    void ClampPlayer() {
-        playerPosition = PlayerManager.instance.GetTransform().position;
-
-        if (!PlayerManager.instance.IsGrounded()) {
-            if (math.distance(playerPosition.y, transform.position.y) > yDistance * yDistance) {
-                Debug.Log("really far");
-                //playerPosition.y += yOffset;
-            }
-            else if (math.distance(playerPosition.y, transform.position.y) > yDistance) {
-                Debug.Log("far");
-                //playerPosition.y += yOffset / 2;
-            }
-            else {
-                playerPosition.y = transform.position.y;
-            }
+    void ClampHorizontal() {
+        if (math.distance(PlayerManager.instance.GetTransform().position.x, rightBound.position.x) > xDistance
+        && math.distance(PlayerManager.instance.GetTransform().position.x, leftBound.position.x) > xDistance) {
+            playerPosition.x = PlayerManager.instance.GetTransform().position.x;
         }
-        else {
+        else if (math.distance(PlayerManager.instance.GetTransform().position.x, rightBound.position.x) < xDistance) { }
+        else if (math.distance(PlayerManager.instance.GetTransform().position.x, leftBound.position.x) < xDistance) { }
+    }
+
+    void ClampVertical() {
+        if (math.distance(PlayerManager.instance.GetTransform().position.y, upperBound.position.y) > yDistance
+        && math.distance(PlayerManager.instance.GetTransform().position.y, lowerBound.position.y) > yDistance) {
+            playerPosition.y = PlayerManager.instance.GetTransform().position.y;
             playerPosition.y += yOffset;
         }
+        else if (math.distance(PlayerManager.instance.GetTransform().position.y, upperBound.position.y) < yDistance) { }
+        else if (math.distance(PlayerManager.instance.GetTransform().position.y, lowerBound.position.y) < yDistance) { }
     }
 
 }
