@@ -4,10 +4,6 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Movement : Input {
-    [Header("Dependencies")]
-    [SerializeField] Trigger body;
-    [SerializeField] Trigger head;
-
     [Header("Move Stats")]
     [SerializeField] float walkSpeed;
     InputAction moveAction;
@@ -30,16 +26,16 @@ public class Movement : Input {
 
     void Start() {
         SetMoveAction();
-        body.TriggerEnter += HitGround;
-        body.TriggerExit += LeftGround;
+        PlayerManager.instance.GetBody().TriggerEnter += HitGround;
+        PlayerManager.instance.GetBody().TriggerExit += LeftGround;
 
-        head.TriggerEnter += HitHead;
+        PlayerManager.instance.GetBody().TriggerEnter += HitHead;
 
         rigidBody = GetComponent<Rigidbody2D>();
         rigidBody.gravityScale = gravity;
     }
 
-    void Update() {
+    void FixedUpdate() {
         if (isMoving) {
             int moveDirection = Mathf.RoundToInt(moveAction.ReadValue<Vector2>().x);
             rigidBody.linearVelocityX = moveDirection * walkSpeed;
@@ -59,10 +55,10 @@ public class Movement : Input {
         jumpAction.performed -= Jump;
         jumpAction.canceled -= StopJumping;
 
-        body.TriggerEnter -= HitGround;
-        body.TriggerExit -= LeftGround;
+        PlayerManager.instance.GetBody().TriggerEnter -= HitGround;
+        PlayerManager.instance.GetBody().TriggerExit -= LeftGround;
 
-        head.TriggerExit -= HitHead;
+        PlayerManager.instance.GetBody().TriggerExit -= HitHead;
     }
 
     // MOVE
@@ -84,7 +80,7 @@ public class Movement : Input {
     // JUMP
     void Jump(InputAction.CallbackContext context) {
         isJumping = true;
-        if (body.isGrounded || canJump) {
+        if (PlayerManager.instance.IsGrounded() || canJump) {
             rigidBody.linearVelocityY = jumpSpeed;
         }
     }
