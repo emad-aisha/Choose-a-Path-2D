@@ -48,6 +48,12 @@ public class VerticalFacingDirectionManager : Input {
 
     void MoveVisualizer(InputAction.CallbackContext context) {
         float newDirection = context.ReadValue<Vector2>().y;
+        if (context.ReadValue<Vector2>().x != 0) {
+            holdingButton = false;
+            lookingUp = false;
+            return;
+        }
+
         if (newDirection != 0) holdingButton = true;
         yDirection = Mathf.RoundToInt(newDirection);
     }
