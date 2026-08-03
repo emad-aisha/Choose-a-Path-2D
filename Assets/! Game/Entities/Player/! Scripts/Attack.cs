@@ -18,12 +18,12 @@ public class Attack : Input {
         attackAction.performed += StartAttack;
 
         hitBox.GetComponent<HurtBox>().SetDamage(damage);
-        FacingDirectionManager.instance.ChangeDirection += MoveHitbox;
+        HorizontalFacingDirectionManager.instance.ChangeDirection += MoveHitbox;
     }
     void OnDisable() {
         attackAction.performed -= StartAttack;
 
-        FacingDirectionManager.instance.ChangeDirection -= MoveHitbox;
+        HorizontalFacingDirectionManager.instance.ChangeDirection -= MoveHitbox;
     }
 
     // EVENT ---
@@ -34,7 +34,7 @@ public class Attack : Input {
     }
 
     void MoveHitbox() {
-        hitBox.transform.position = new Vector3(PlayerManager.instance.GetTransform().position.x - FacingDirectionManager.instance.GetDirection(), PlayerManager.instance.GetTransform().position.y);
+        hitBox.transform.position = new Vector3(PlayerManager.instance.GetTransform().position.x - HorizontalFacingDirectionManager.instance.GetDirection(), PlayerManager.instance.GetTransform().position.y);
     }
 
 

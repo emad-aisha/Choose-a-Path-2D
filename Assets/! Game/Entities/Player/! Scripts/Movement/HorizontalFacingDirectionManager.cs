@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class FacingDirectionManager : Input {
-    public static FacingDirectionManager instance;
+public class HorizontalFacingDirectionManager : Input {
+    public static HorizontalFacingDirectionManager instance;
     InputAction moveAction;
     [SerializeField] float offset;
 
