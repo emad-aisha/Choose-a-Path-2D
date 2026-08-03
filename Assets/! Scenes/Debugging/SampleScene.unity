@@ -1378,8 +1378,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Movement
   actionName: Player
   walkSpeed: 8
-  maxJumpHeight: 10
-  gravity: 1.5
+  jumpSpeed: 10
+  maxGravity: 5
+  gravity: 1
+  gravityAcceleration: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
