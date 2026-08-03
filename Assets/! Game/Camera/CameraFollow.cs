@@ -6,6 +6,7 @@ public class CameraFollow : MonoBehaviour {
     [SerializeField] float followPercent;
     [SerializeField] float z = -9;
     [SerializeField] float yOffset;
+    [SerializeField] float xOffset;
 
     [Header("Speed")]
     [SerializeField] float ySpeed;
@@ -40,7 +41,7 @@ public class CameraFollow : MonoBehaviour {
     void ClampHorizontal() {
         if (math.distance(PlayerManager.instance.GetTransform().position.x, rightBound.position.x) > xDistance
         && math.distance(PlayerManager.instance.GetTransform().position.x, leftBound.position.x) > xDistance) {
-            playerPosition.x = PlayerManager.instance.GetTransform().position.x;
+            playerPosition.x = PlayerManager.instance.GetTransform().position.x + (xOffset * FacingDirectionManager.instance.GetDirection());
         }
         else if (math.distance(PlayerManager.instance.GetTransform().position.x, rightBound.position.x) < xDistance) { }
         else if (math.distance(PlayerManager.instance.GetTransform().position.x, leftBound.position.x) < xDistance) { }
