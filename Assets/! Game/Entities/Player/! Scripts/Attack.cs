@@ -17,6 +17,7 @@ public class Attack : Input {
         attackAction = InputManager.instance.GetAction(actionName, "Attack");
         attackAction.performed += StartAttack;
 
+        hitBox.GetComponent<HurtBox>().SetDamage(damage);
         FacingDirectionManager.instance.ChangeDirection += MoveHitbox;
     }
     void OnDisable() {

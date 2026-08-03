@@ -2,10 +2,14 @@ using UnityEngine;
 
 
 public class HurtBox : MonoBehaviour {
+    int damage = 0;
+
+    public void SetDamage(int newDamage) { damage = newDamage; }
 
     void OnTriggerEnter2D(Collider2D collision) {
-        if (!collision.CompareTag("Player") && collision.TryGetComponent(out Health health)) {
-            Debug.Log("hrt");
+        // ignore self
+        if (!collision.CompareTag(gameObject.tag) && collision.TryGetComponent(out Health health)) {
+            health.Hurt(damage);
         }
     }
 
