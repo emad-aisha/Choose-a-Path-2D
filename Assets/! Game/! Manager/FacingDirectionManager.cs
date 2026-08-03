@@ -6,6 +6,10 @@ public class FacingDirectionManager : Input {
     InputAction moveAction;
     [SerializeField] float offset;
 
+    public delegate void ChangeDirectionEvent();
+    public event ChangeDirectionEvent ChangeDirection;
+
+
     void Start() {
         if (instance == null) instance = this;
 
@@ -14,6 +18,7 @@ public class FacingDirectionManager : Input {
     }
     void OnDisable() {
         moveAction.performed -= MoveVisualizer;
+        ChangeDirection = null;
     }
 
     float xDirection = 1;
@@ -24,8 +29,9 @@ public class FacingDirectionManager : Input {
     }
 
     void MoveVisualizer(InputAction.CallbackContext context) {
-        xDirection = context.ReadValue<Vector2>().x;
-        xDirection = Mathf.RoundToInt(xDirection);
+        float newDirection = context.ReadValue<Vector2>().x;
+        if (newDirection != xDirection) ChangeDirection.Invoke();
+        xDirection = Mathf.RoundToInt(newDirection);
     }
 
     public float GetDirection() { return xDirection; }
