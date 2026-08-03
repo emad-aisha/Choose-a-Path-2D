@@ -4,6 +4,10 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Movement : Input {
+    [Header("Dependencies")]
+    [SerializeField] Trigger body;
+    [SerializeField] Trigger head;
+
     [Header("Move Stats")]
     [SerializeField] float walkSpeed;
     InputAction moveAction;
@@ -23,13 +27,13 @@ public class Movement : Input {
     bool canJump = true;
 
     Rigidbody2D rigidBody;
-    Grounded body;
 
     void Start() {
         SetMoveAction();
-        body = GetComponentInChildren<Grounded>();
-        body.HitGround += HitGround;
-        body.LeftGround += LeftGround;
+        body.TriggerEnter += HitGround;
+        body.TriggerExit += LeftGround;
+
+        head.TriggerEnter += HitHead;
 
         rigidBody = GetComponent<Rigidbody2D>();
         rigidBody.gravityScale = gravity;
@@ -55,8 +59,10 @@ public class Movement : Input {
         jumpAction.performed -= Jump;
         jumpAction.canceled -= StopJumping;
 
-        body.HitGround -= HitGround;
-        body.LeftGround -= LeftGround;
+        body.TriggerEnter -= HitGround;
+        body.TriggerExit -= LeftGround;
+
+        head.TriggerExit -= HitHead;
     }
 
     // MOVE
@@ -86,11 +92,14 @@ public class Movement : Input {
         isJumping = false;
         rigidBody.linearVelocityY *= stopJumpMod;
     }
+    void HitHead() { rigidBody.linearVelocity = Vector2.zero; }
     void HitGround() {
         rigidBody.gravityScale = gravity;
+        rigidBody.linearVelocity = Vector2.zero;
         canJump = false;
     }
     void LeftGround() { if (!isJumping) StartCoroutine(CoyoteTime()); }
+
 
     // HELPER -- 
     IEnumerator CoyoteTime() {

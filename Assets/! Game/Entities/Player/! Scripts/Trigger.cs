@@ -1,27 +1,27 @@
 using UnityEngine;
 
-public class Grounded : MonoBehaviour {
+public class Trigger : MonoBehaviour {
     public bool isGrounded;
     public delegate void HitGroundEvent();
-    public event HitGroundEvent HitGround;
-    public event HitGroundEvent LeftGround;
+    public event HitGroundEvent TriggerEnter;
+    public event HitGroundEvent TriggerExit;
 
     void OnDisable() {
-        HitGround = null;
-        LeftGround = null;
+        TriggerEnter = null;
+        TriggerExit = null;
     }
 
     void OnTriggerEnter2D(Collider2D collision) {
         if (!collision.CompareTag("Player") && !collision.CompareTag("Enemy")) {
             isGrounded = true;
-            HitGround?.Invoke();
+            TriggerEnter?.Invoke();
         }
     }
 
     void OnTriggerExit2D(Collider2D collision) {
         if (!collision.CompareTag("Player") && !collision.CompareTag("Enemy")) {
             isGrounded = false;
-            LeftGround?.Invoke();
+            TriggerExit?.Invoke();
         }
     }
 }

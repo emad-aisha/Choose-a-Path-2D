@@ -1316,7 +1316,7 @@ Transform:
   m_GameObject: {fileID: 1401408666}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.05, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1366,7 +1366,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 0.1}
+  m_Size: {x: 0.75, y: 0.1}
   m_EdgeRadius: 0
 --- !u!114 &1401408669
 MonoBehaviour:
@@ -1409,7 +1409,7 @@ Transform:
   m_GameObject: {fileID: 1679852512}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -3.9, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1460,8 +1460,8 @@ MonoBehaviour:
   walkSpeed: 8
   jumpSpeed: 10
   coyoteTime: 0.2
-  maxGravity: 5
-  gravity: 1
+  maxGravity: 6
+  gravity: 3
   gravityAcceleration: 3
 --- !u!70 &1679852517
 CapsuleCollider2D:
@@ -1473,7 +1473,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: e96dacebb3c64a74da9bd98bf5a8693c, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
