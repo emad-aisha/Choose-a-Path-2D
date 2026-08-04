@@ -68,5 +68,51 @@
         "*.slnx": "*.csproj"
     },
     "dotnet.defaultSolution": "Choose a Path 2D.slnx",
-    "dotnet.enableWorkspaceBasedDevelopment": false
+    "dotnet.enableWorkspaceBasedDevelopment": false,
+    "folder-customization.folders": [
+        {
+            "path": "Choose a Path 2D\\Assets\\! Game\\Entities\\Player\\",
+            "color": "foldercustomization.AnsiColor140"
+        },
+        {
+            "path": "Choose a Path 2D\\Assets\\! Game\\Entities\\Enemy\\",
+            "color": "foldercustomization.AnsiColor208"
+        },
+        {
+            "path": "Choose a Path 2D\\Assets\\! Game\\! Abstract\\",
+            "color": "foldercustomization.AnsiColor218"
+        },
+        {
+            "path": "Choose a Path 2D\\Assets\\! Game\\! Composition\\",
+            "color": "foldercustomization.AnsiColor218"
+        },
+        {
+            "path": "Choose a Path 2D\\Assets\\! Game\\! Manager\\",
+            "color": "foldercustomization.AnsiColor218"
+        },
+        {
+            "path": "Choose a Path 2D\\Assets\\! Prefabs\\",
+            "color": "foldercustomization.AnsiColor8"
+        },
+        {
+            "path": "Choose a Path 2D\\Assets\\! Scenes\\",
+            "color": "foldercustomization.AnsiColor8"
+        },
+        {
+            "path": "Choose a Path 2D\\Assets\\! UI\\"
+        },
+        {
+            "path": "Choose a Path 2D\\Assets\\Background Art\\",
+            "color": "foldercustomization.AnsiColor8"
+        },
+        {
+            "path": "Choose a Path 2D\\Assets\\Misc\\",
+            "color": "foldercustomization.AnsiColor8"
+        },
+        {
+            "path": "Choose a Path 2D\\Assets\\Tile Maps\\",
+            "color": "foldercustomization.AnsiColor8"
+        }
+    ],
+    "todo-tree.ripgrep.ripgrep": "C:\\ProgramData\\chocolatey\\lib\\ripgrep\\tools\\ripgrep-14.1.0-x86_64-pc-windows-msvc\\rg.exe"
 }

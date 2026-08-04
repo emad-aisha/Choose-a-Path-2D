@@ -15,6 +15,7 @@ public class PlayerManager : MonoBehaviour {
     [Header("Misc")]
     [SerializeField] Rigidbody2D playerRigidbody;
     [SerializeField] Movement movementController;
+    [SerializeField] Health playerHealth;
     [SerializeField] Attack attack;
     [SerializeField] HurtBox hurtBox;
 
@@ -22,10 +23,12 @@ public class PlayerManager : MonoBehaviour {
     void Awake() {
         if (instance == null) instance = this;
         hurtBox.Hit += StartKnockback;
+        playerHealth.Fling += StartKnockback;
     }
 
     void OnDisable() {
         hurtBox.Hit -= StartKnockback;
+        playerHealth.Fling -= StartKnockback;
     }
 
     // GETTERS
@@ -56,7 +59,7 @@ public class PlayerManager : MonoBehaviour {
             time += Time.deltaTime;
             playerRigidbody.linearDamping += Time.deltaTime * knockback;
 
-            yield return new WaitForSecondsRealtime(Time.deltaTime);
+            yield return new WaitForSeconds(Time.deltaTime);
         }
 
         playerRigidbody.linearDamping = 0;

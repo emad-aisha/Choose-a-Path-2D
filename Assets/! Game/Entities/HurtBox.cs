@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class HurtBox : MonoBehaviour {
-    int damage = 0;
+    [SerializeField] int damage = 0;
 
     public delegate void HitEvent();
     public event HitEvent Hit;

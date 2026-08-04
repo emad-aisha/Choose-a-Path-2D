@@ -2105,7 +2105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VerticalFacingDirectionManager
   actionName: Player
   offset: 1.5
-  lookTimer: 3
+  lookTimer: 1.5
 --- !u!4 &1180705382
 Transform:
   m_ObjectHideFlags: 0
@@ -2257,6 +2257,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3f5a4ec789e564882d2a91f54d3b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grounded
+  ignoreTags:
+  - Player
+  - Enemy
   isGrounded: 0
 --- !u!1 &1626273461
 GameObject:
@@ -2440,6 +2443,7 @@ MonoBehaviour:
   head: {fileID: 1887173070}
   playerRigidbody: {fileID: 1679852514}
   movementController: {fileID: 1679852516}
+  playerHealth: {fileID: 1679852521}
   attack: {fileID: 521473715}
   hurtBox: {fileID: 1786465418}
 --- !u!114 &1679852521
@@ -2455,8 +2459,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   stunTime: 0.1
+  sprite: {fileID: 979078263}
+  flashTimes: 4
+  deathColor: {r: 0.5450981, g: 0, b: 0, a: 1}
+  iFramesColor1: {r: 0.40251565, g: 0.40251565, b: 0.40251565, a: 1}
+  iFramesColor2: {r: 0.7106918, g: 0.7106918, b: 0.7106918, a: 1}
   maxHealth: 10
-  IFrames: 0.2
+  IFrames: 1.5
 --- !u!114 &1786465418 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3354930168320403581, guid: fe8eb4f987018724ea314d16d2b51bb7, type: 3}
@@ -2478,11 +2487,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1823394463}
   - component: {fileID: 1823394462}
+  - component: {fileID: 1823394464}
   - component: {fileID: 1823394460}
   - component: {fileID: 1823394461}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2517,7 +2527,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -2605,6 +2615,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   stunTime: 0.1
+  sprite: {fileID: 0}
+  flashTimes: 0
+  deathColor: {r: 0.5450981, g: 0, b: 0, a: 1}
+  iFramesColor1: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  iFramesColor2: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   maxHealth: 1
   IFrames: 0
 --- !u!4 &1823394463
@@ -2622,6 +2637,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1823394464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823394459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b501245d9df3c164e97c34a0e4cfb9f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HurtBox
+  damage: 1
 --- !u!1 &1887173067
 GameObject:
   m_ObjectHideFlags: 0
@@ -2713,6 +2741,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3f5a4ec789e564882d2a91f54d3b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grounded
+  ignoreTags:
+  - Player
+  - Enemy
   isGrounded: 0
 --- !u!1 &1957782962
 GameObject:
