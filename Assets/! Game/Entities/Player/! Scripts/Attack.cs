@@ -17,6 +17,7 @@ public class Attack : Input {
 
     InputAction faceAction;
     Vector2 facingDirection;
+    Vector2 attackDirection;
 
 
     void Start() {
@@ -43,17 +44,23 @@ public class Attack : Input {
             // if facing down and not on ground OR facing up
             if ((facingDirection.y < 0 && !PlayerManager.instance.IsGrounded()) || facingDirection.y > 0) {
                 hitBox.transform.position += new Vector3(0, VerticalFacingDirectionManager.instance.GetPureDirection() * attackOffset);
+                attackDirection.x = 0;
+                attackDirection.y = VerticalFacingDirectionManager.instance.GetPureDirection();
             }
             else {
                 // attack horizontally
                 hitBox.transform.position = PlayerManager.instance.GetTransform().position;
                 hitBox.transform.position += new Vector3(HorizontalFacingDirectionManager.instance.GetDirection() * attackOffset, 0);
+                attackDirection.x = HorizontalFacingDirectionManager.instance.GetDirection();
+                attackDirection.y = 0;
             }
         }
         else {
             // attack horizontally
             hitBox.transform.position = PlayerManager.instance.GetTransform().position;
             hitBox.transform.position += new Vector3(HorizontalFacingDirectionManager.instance.GetDirection() * attackOffset, 0);
+            attackDirection.x = HorizontalFacingDirectionManager.instance.GetDirection();
+            attackDirection.y = 0;
         }
 
     }
@@ -64,6 +71,9 @@ public class Attack : Input {
         StartCoroutine(EnableHitbox());
         StartCoroutine(AttackCooldown());
     }
+
+    // GETTERS
+    public Vector2 GetAttackDirection() { return attackDirection; }
 
     // TIMERS --- 
     IEnumerator EnableHitbox() {

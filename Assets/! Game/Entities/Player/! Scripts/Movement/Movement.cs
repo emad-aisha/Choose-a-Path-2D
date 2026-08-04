@@ -23,6 +23,8 @@ public class Movement : Input {
     bool canJump = true;
 
     Rigidbody2D rigidBody;
+    bool canMove = true;
+
 
     void Start() {
         SetMoveAction();
@@ -36,6 +38,7 @@ public class Movement : Input {
     }
 
     void FixedUpdate() {
+        if (!canMove) return;
         if (isMoving) {
             int moveDirection = Mathf.RoundToInt(moveAction.ReadValue<Vector2>().x);
             rigidBody.linearVelocityX = moveDirection * walkSpeed;
@@ -63,13 +66,15 @@ public class Movement : Input {
 
     // MOVE
     void Move(InputAction.CallbackContext context) {
+        if (!canMove) return;
         int moveDirection = Mathf.RoundToInt(context.ReadValue<Vector2>().x);
-        if (moveDirection == 0) return;
+        if (moveDirection == 0 || !canMove) return;
 
         isMoving = true;
         rigidBody.linearVelocityX = moveDirection * walkSpeed;
     }
     void StopMoving(InputAction.CallbackContext context) {
+        if (!canMove) return;
         int moveDirection = Mathf.RoundToInt(context.ReadValue<Vector2>().x);
         if (moveDirection != 0) return;
 
@@ -79,22 +84,31 @@ public class Movement : Input {
 
     // JUMP
     void Jump(InputAction.CallbackContext context) {
+        if (!canMove) return;
         isJumping = true;
         if (PlayerManager.instance.IsGrounded() || canJump) {
             rigidBody.linearVelocityY = jumpSpeed;
         }
     }
     void StopJumping(InputAction.CallbackContext context) {
+        if (!canMove) return;
         isJumping = false;
         rigidBody.linearVelocityY *= stopJumpMod;
     }
-    void HitHead() { rigidBody.linearVelocity = Vector2.zero; }
+    void HitHead() {
+        if (!canMove) return;
+        rigidBody.linearVelocity = Vector2.zero;
+    }
     void HitGround() {
+        if (!canMove) return;
         rigidBody.gravityScale = gravity;
         rigidBody.linearVelocity = Vector2.zero;
         canJump = false;
     }
-    void LeftGround() { if (!isJumping) StartCoroutine(CoyoteTime()); }
+    void LeftGround() {
+        if (!canMove) return;
+        if (!isJumping) StartCoroutine(CoyoteTime());
+    }
 
 
     // HELPER -- 
@@ -115,6 +129,7 @@ public class Movement : Input {
         jumpAction.performed += Jump;
         jumpAction.canceled += StopJumping;
     }
+    public void SetCanMove(bool value) { canMove = value; }
 
     // GETTERS ---
 
