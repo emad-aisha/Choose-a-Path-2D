@@ -43,15 +43,15 @@ public class Attack : Input {
 
             // if facing down and not on ground OR facing up
             if ((facingDirection.y < 0 && !PlayerManager.instance.IsGrounded()) || facingDirection.y > 0) {
-                hitBox.transform.position += new Vector3(0, VerticalFacingDirectionManager.instance.GetPureDirection() * attackOffset);
+                hitBox.transform.position += new Vector3(0, facingDirection.y * attackOffset);
                 attackDirection.x = 0;
-                attackDirection.y = VerticalFacingDirectionManager.instance.GetPureDirection();
+                attackDirection.y = facingDirection.y;
             }
             else {
                 // attack horizontally
                 hitBox.transform.position = PlayerManager.instance.GetTransform().position;
-                hitBox.transform.position += new Vector3(HorizontalFacingDirectionManager.instance.GetDirection() * attackOffset, 0);
-                attackDirection.x = HorizontalFacingDirectionManager.instance.GetDirection();
+                hitBox.transform.position += new Vector3(facingDirection.x * attackOffset, 0);
+                attackDirection.x = facingDirection.x;
                 attackDirection.y = 0;
             }
         }

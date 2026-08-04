@@ -1,10 +1,12 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour {
     public static PlayerManager instance;
-    [Header("Knockback Stats")]
+
+    [Header("Knockback")]
+    [SerializeField] Health playerHealth;
+    [SerializeField] HurtBox hurtBox;
     [SerializeField] float knockback;
     [SerializeField] float knockbackTime;
 
@@ -15,20 +17,20 @@ public class PlayerManager : MonoBehaviour {
     [Header("Misc")]
     [SerializeField] Rigidbody2D playerRigidbody;
     [SerializeField] Movement movementController;
-    [SerializeField] Health playerHealth;
     [SerializeField] Attack attack;
-    [SerializeField] HurtBox hurtBox;
 
 
     void Awake() {
         if (instance == null) instance = this;
         hurtBox.Hit += StartKnockback;
         playerHealth.Fling += StartKnockback;
+        HorizontalFacingDirectionManager.instance.ChangeDirection += FlipPlayer;
     }
 
     void OnDisable() {
         hurtBox.Hit -= StartKnockback;
         playerHealth.Fling -= StartKnockback;
+        HorizontalFacingDirectionManager.instance.ChangeDirection -= FlipPlayer;
     }
 
     // GETTERS
@@ -42,7 +44,9 @@ public class PlayerManager : MonoBehaviour {
 
     // EVENTS
     void StartKnockback() { StartCoroutine(SetKnockback(-GetAttackDirection())); }
-
+    void FlipPlayer() {
+        StartCoroutine(FlipPlayerCoroutine());
+    }
 
     // SETTERS
     public IEnumerator SetKnockback(Vector3 direction) {
@@ -65,6 +69,15 @@ public class PlayerManager : MonoBehaviour {
         playerRigidbody.linearDamping = 0;
         playerRigidbody.linearVelocity = Vector2.zero;
         movementController.SetCanMove(true);
+    }
+
+    IEnumerator FlipPlayerCoroutine() {
+        int safety = 0;
+        while (hurtBox.gameObject.activeSelf && safety < 200) {
+            safety++;
+            yield return new WaitForEndOfFrame();
+        }
+        transform.Rotate(0, 180, 0);
     }
 
 }

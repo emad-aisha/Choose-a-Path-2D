@@ -16,7 +16,7 @@ public class VerticalFacingDirectionManager : Input {
 
     float yDirection = 1;
 
-    void Start() {
+    void Awake() {
         if (instance == null) instance = this;
 
         moveAction = InputManager.instance.GetAction(actionName, "Move");

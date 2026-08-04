@@ -10,7 +10,7 @@ public class HorizontalFacingDirectionManager : Input {
     public event ChangeDirectionEvent ChangeDirection;
 
 
-    void Start() {
+    void Awake() {
         if (instance == null) instance = this;
 
         moveAction = InputManager.instance.GetAction(actionName, "Move");
@@ -30,7 +30,7 @@ public class HorizontalFacingDirectionManager : Input {
 
     void MoveVisualizer(InputAction.CallbackContext context) {
         float newDirection = context.ReadValue<Vector2>().x;
-        if (newDirection == 0) return;
+        if (newDirection == 0 || Mathf.RoundToInt(newDirection) != newDirection) return;
 
         if (newDirection != xDirection) ChangeDirection?.Invoke();
         xDirection = Mathf.RoundToInt(newDirection);
