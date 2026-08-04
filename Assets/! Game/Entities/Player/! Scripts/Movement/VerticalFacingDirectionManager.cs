@@ -10,9 +10,9 @@ public class VerticalFacingDirectionManager : Input {
     bool holdingButton = false;
 
     bool lookingUp;
-    //public delegate void ChangeDirectionEvent();
-    //public event ChangeDirectionEvent LookDirection;
-    //public event ChangeDirectionEvent StopLookDirection;
+    public delegate void ChangeDirectionEvent();
+    public event ChangeDirectionEvent LookDirection;
+    public event ChangeDirectionEvent StopLookDirection;
 
     float yDirection = 1;
 
@@ -20,13 +20,11 @@ public class VerticalFacingDirectionManager : Input {
         if (instance == null) instance = this;
 
         moveAction = InputManager.instance.GetAction(actionName, "Move");
-        moveAction.performed += MoveVisualizer;
-        moveAction.canceled += StopLooking;
     }
 
     void OnDisable() {
-        moveAction.performed -= MoveVisualizer;
-        moveAction.canceled -= StopLooking;
+        LookDirection = null;
+        StopLookDirection = null;
     }
 
     void Update() {
@@ -42,29 +40,45 @@ public class VerticalFacingDirectionManager : Input {
 
     // EVENTS ---
     void LateUpdate() {
+        StartLooking();
+        StopLooking();
+
         transform.position = PlayerManager.instance.GetTransform().position;
         transform.position += new Vector3(0, offset * yDirection);
     }
 
-    void MoveVisualizer(InputAction.CallbackContext context) {
-        float newDirection = context.ReadValue<Vector2>().y;
-        if (context.ReadValue<Vector2>().x != 0) {
+    // FACING --- 
+    void StartLooking() {
+        float newDirection = moveAction.ReadValue<Vector2>().y;
+
+        if (newDirection == 0) {
+            StopLookDirection?.Invoke();
             holdingButton = false;
             lookingUp = false;
             return;
         }
 
-        if (newDirection != 0) holdingButton = true;
         yDirection = Mathf.RoundToInt(newDirection);
+        LookDirection?.Invoke();
+    }
+    void StopLooking() {
+        if (moveAction.ReadValue<Vector2>().x == 0) {
+            holdingButton = true;
+        }
+        else {
+            holdingButton = false;
+            lookingUp = false;
+        }
     }
 
-    void StopLooking(InputAction.CallbackContext context) {
-        holdingButton = false;
-        lookingUp = false;
-    }
 
+    // GETTERS --- 
     public float GetDirection() {
         if (lookingUp) return yDirection;
         else return 0;
     }
+    public float GetPureDirection() {
+        return yDirection;
+    }
+
 }

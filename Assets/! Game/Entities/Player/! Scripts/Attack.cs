@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class Attack : Input {
     InputAction attackAction;
+
     [Header("Basic Stats")]
     [SerializeField] int damage;
     [SerializeField] float cooldown;
@@ -12,18 +13,49 @@ public class Attack : Input {
     [Header("Hitbox Stuff")]
     [SerializeField] GameObject hitBox;
     [SerializeField] float timeOnScreen;
+    [SerializeField] float attackOffset = 1;
+
+    InputAction faceAction;
+    Vector2 facingDirection;
+
 
     void Start() {
         attackAction = InputManager.instance.GetAction(actionName, "Attack");
+        faceAction = InputManager.instance.GetAction(actionName, "Move");
         attackAction.performed += StartAttack;
 
         hitBox.GetComponent<HurtBox>().SetDamage(damage);
-        HorizontalFacingDirectionManager.instance.ChangeDirection += MoveHitbox;
     }
     void OnDisable() {
         attackAction.performed -= StartAttack;
+    }
+    void Update() { AttackDirection(); }
 
-        HorizontalFacingDirectionManager.instance.ChangeDirection -= MoveHitbox;
+
+    void AttackDirection() {
+        if (hitBox.activeSelf) return; // dont change direction when shown
+        facingDirection = faceAction.ReadValue<Vector2>();
+
+        // attack vertically
+        if (facingDirection.y != 0) {
+            hitBox.transform.position = PlayerManager.instance.GetTransform().position;
+
+            // if facing down and not on ground OR facing up
+            if ((facingDirection.y < 0 && !PlayerManager.instance.IsGrounded()) || facingDirection.y > 0) {
+                hitBox.transform.position += new Vector3(0, VerticalFacingDirectionManager.instance.GetPureDirection() * attackOffset);
+            }
+            else {
+                // attack horizontally
+                hitBox.transform.position = PlayerManager.instance.GetTransform().position;
+                hitBox.transform.position += new Vector3(HorizontalFacingDirectionManager.instance.GetDirection() * attackOffset, 0);
+            }
+        }
+        else {
+            // attack horizontally
+            hitBox.transform.position = PlayerManager.instance.GetTransform().position;
+            hitBox.transform.position += new Vector3(HorizontalFacingDirectionManager.instance.GetDirection() * attackOffset, 0);
+        }
+
     }
 
     // EVENT ---
@@ -32,12 +64,6 @@ public class Attack : Input {
         StartCoroutine(EnableHitbox());
         StartCoroutine(AttackCooldown());
     }
-
-    void MoveHitbox() {
-        if (hitBox.activeSelf) return; // dont change direction when shown
-        hitBox.transform.position = new Vector3(PlayerManager.instance.GetTransform().position.x - HorizontalFacingDirectionManager.instance.GetDirection(), PlayerManager.instance.GetTransform().position.y);
-    }
-
 
     // TIMERS --- 
     IEnumerator EnableHitbox() {

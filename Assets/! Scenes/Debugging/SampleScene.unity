@@ -2059,7 +2059,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VerticalFacingDirectionManager
   actionName: Player
-  offset: 1
+  offset: 1.5
   lookTimer: 1
 --- !u!4 &1180705382
 Transform:
@@ -2674,6 +2674,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1626273462}
     m_Modifications:
+    - target: {fileID: 1763872948973000183, guid: fe8eb4f987018724ea314d16d2b51bb7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3365359560261065123, guid: fe8eb4f987018724ea314d16d2b51bb7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2717,6 +2721,14 @@ PrefabInstance:
     - target: {fileID: 5801917193053709182, guid: fe8eb4f987018724ea314d16d2b51bb7, type: 3}
       propertyPath: m_Name
       value: Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004186579335212091, guid: fe8eb4f987018724ea314d16d2b51bb7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9098598457001956082, guid: fe8eb4f987018724ea314d16d2b51bb7, type: 3}
+      propertyPath: attackOffset
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
