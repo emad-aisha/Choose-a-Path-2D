@@ -37,8 +37,10 @@ public class Movement : Input {
         rigidBody.gravityScale = gravity;
     }
 
+
     void FixedUpdate() {
         if (!canMove) return;
+
         if (isMoving) {
             int moveDirection = Mathf.RoundToInt(moveAction.ReadValue<Vector2>().x);
             rigidBody.linearVelocityX = moveDirection * walkSpeed;
@@ -48,6 +50,7 @@ public class Movement : Input {
             rigidBody.gravityScale += gravityAcceleration * Time.deltaTime;
         }
     }
+
 
     // EVENTS ---
     // DEALLOCATION
@@ -113,6 +116,7 @@ public class Movement : Input {
 
     // HELPER -- 
     IEnumerator CoyoteTime() {
+        if (!canMove) yield break;
         canJump = true;
         yield return new WaitForSeconds(coyoteTime);
         canJump = false;
@@ -129,7 +133,19 @@ public class Movement : Input {
         jumpAction.performed += Jump;
         jumpAction.canceled += StopJumping;
     }
-    public void SetCanMove(bool value) { canMove = value; }
+    public void SetCanMove(bool value) {
+        canMove = value;
+    }
+
+    public void SetGravity(float newGravity) { rigidBody.gravityScale = newGravity; }
+    public void ResetGravity() { rigidBody.gravityScale = gravity; }
+
+    public IEnumerator StopGravity(float time) {
+        rigidBody.gravityScale = 0;
+        yield return new WaitForSeconds(time);
+        rigidBody.gravityScale = gravity;
+    }
+
 
     // GETTERS ---
 

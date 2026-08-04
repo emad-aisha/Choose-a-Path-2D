@@ -1,8 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class PlayerManager : MonoBehaviour {
     public static PlayerManager instance;
+    [Header("Player Data")]
+    [SerializeField] float colliderWidth;
+    [SerializeField] float colliderHeight;
 
     [Header("Knockback")]
     [SerializeField] Health playerHealth;
@@ -25,6 +29,9 @@ public class PlayerManager : MonoBehaviour {
         hurtBox.Hit += StartKnockback;
         playerHealth.Fling += StartKnockback;
         HorizontalFacingDirectionManager.instance.ChangeDirection += FlipPlayer;
+
+        colliderWidth = GetComponent<BoxCollider2D>().bounds.size.x;
+        colliderHeight = GetComponent<BoxCollider2D>().bounds.size.y;
     }
 
     void OnDisable() {
@@ -35,20 +42,34 @@ public class PlayerManager : MonoBehaviour {
 
     // GETTERS
     public Transform GetTransform() { return transform; }
+    public float GetPlayerWidth() { return colliderWidth; }
+    public float GetPlayerHeight() { return colliderHeight; }
+
+    // triggers
     public ref Trigger GetBody() { return ref body; }
     public ref Trigger GetHead() { return ref head; }
-    public ref Rigidbody2D GetRigidbody() { return ref playerRigidbody; }
 
+    // movement
+    public ref Rigidbody2D GetRigidbody() { return ref playerRigidbody; }
+    public void SetPlayerCanMove(bool value) {
+        if (!value) playerRigidbody.linearVelocity = Vector2.zero;
+        movementController.SetCanMove(value);
+    }
     public bool IsGrounded() { return body.isGrounded; }
+    // gravity
+    public void StopPlayerGravity(float time) { StartCoroutine(movementController.StopGravity(time)); }
+    public void StopPlayerGravity() { movementController.SetGravity(0); }
+    public void StartPlayerGravity() { movementController.ResetGravity(); }
+
+
+    // attack
     public Vector2 GetAttackDirection() { return attack.GetAttackDirection(); }
 
     // EVENTS
     void StartKnockback() { StartCoroutine(SetKnockback(-GetAttackDirection())); }
-    void FlipPlayer() {
-        StartCoroutine(FlipPlayerCoroutine());
-    }
+    void FlipPlayer() { StartCoroutine(FlipPlayerCoroutine()); }
 
-    // SETTERS
+    // TIMERS
     public IEnumerator SetKnockback(Vector3 direction) {
         if (!gameObject.CompareTag("Player")) yield break;
 
