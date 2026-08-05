@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3354930168320403581}
   - component: {fileID: 5394463172581475960}
   - component: {fileID: 8477374913589102616}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Hurtbox
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3365359560261065123}
   - component: {fileID: 9098598457001956082}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Attack
   m_TagString: Player
   m_Icon: {fileID: 0}

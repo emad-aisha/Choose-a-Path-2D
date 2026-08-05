@@ -7,6 +7,7 @@ public class AbilityManager : MonoBehaviour {
 
     [Header("Grapple Stats")]
     [SerializeField] Grapple grapple;
+    [SerializeField] int maxInPlaceTimes;
 
 
     void Awake() {
@@ -33,7 +34,6 @@ public class AbilityManager : MonoBehaviour {
 
     void StartGrapple() { StartCoroutine(Grapple()); }
 
-    public int allowedTimesInPlace;
     IEnumerator Grapple() {
         if (grapple.direction == global::Grapple.Direction.None) yield break;
 
@@ -48,15 +48,13 @@ public class AbilityManager : MonoBehaviour {
         Debug.DrawRay(transform.position, direction * grapple.distance, Color.green, 0.5f);
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, grapple.distance, ~grapple.ignoreLayers);
 
+
+
         // TODO: this should be enough time for the grapple animation
-
-
         yield return new WaitForSeconds(grapple.windup);
-        // stop player
 
-        if (hit.collider == null) {
-            // otherwise fall
-        }
+
+        if (hit.collider == null) { }
         else {
             // if it hit something, go there
             int timesInPlace = 0;
@@ -69,12 +67,11 @@ public class AbilityManager : MonoBehaviour {
                 playerPosition = transform.position; // update player pos
 
                 if (lastPlayerPosition == playerPosition) timesInPlace++;
-                if (timesInPlace > allowedTimesInPlace) { Debug.Log("escape"); break; }
+                if (timesInPlace > maxInPlaceTimes) { break; }
 
                 lastPlayerPosition = playerPosition;
                 yield return new WaitForFixedUpdate();
             }
-            Debug.Log("fin");
         }
 
         // unstop player

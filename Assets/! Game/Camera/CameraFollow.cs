@@ -1,4 +1,3 @@
-using Unity.Mathematics;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
@@ -18,10 +17,7 @@ public class CameraFollow : MonoBehaviour {
     [Header("Bounds")]
     [SerializeField] float xDistance;
     [SerializeField] float yDistance;
-    [SerializeField] Transform upperBound;
-    [SerializeField] Transform lowerBound;
-    [SerializeField] Transform rightBound;
-    [SerializeField] Transform leftBound;
+    [SerializeField] BoxCollider2D bounds;
 
     Vector2 playerPosition;
     Vector2 position;
@@ -30,38 +26,37 @@ public class CameraFollow : MonoBehaviour {
     void Start() { playerPosition = PlayerManager.instance.GetTransform().position; }
 
     void FixedUpdate() {
-        ClampHorizontal();
-        ClampVertical();
+        Clamp();
+        LerpToNewPosition();
 
+        transform.position = position;
+        LookCheck();
+    }
+
+
+    // HELPERS
+    void Clamp() {
+        // update player position lmao
+        playerPosition = PlayerManager.instance.GetTransform().position;
+
+        playerPosition.x = Mathf.Clamp(playerPosition.x, bounds.bounds.min.x + xDistance, bounds.bounds.max.x - xDistance);
+        playerPosition.y = Mathf.Clamp(playerPosition.y, bounds.bounds.min.y + yDistance + yOffset, bounds.bounds.max.y - yDistance + yOffset);
+    }
+
+    void LerpToNewPosition() {
         position = Vector3.Lerp(transform.position, playerPosition, followPercent);
         float x = Vector3.Lerp(transform.position, position, xSpeed * Time.deltaTime).x;
         float y = Vector3.Lerp(transform.position, position, ySpeed * Time.deltaTime).y;
         position = new Vector3(x, y);
+    }
 
-        transform.position = position;
+    void LookCheck() {
         if (VerticalFacingDirectionManager.instance.GetDirection() != 0) {
             Vector2 modifiedPosition = playerPosition;
             modifiedPosition.y += lookOffset * VerticalFacingDirectionManager.instance.GetDirection();
             transform.position = Vector3.Lerp(transform.position, modifiedPosition, followPercent * xSpeed * Time.deltaTime);
         }
         transform.position = new Vector3(transform.position.x, transform.position.y, z);
-    }
-
-    void ClampHorizontal() {
-        if (math.distance(PlayerManager.instance.GetTransform().position.x, rightBound.position.x) > xDistance
-        && math.distance(PlayerManager.instance.GetTransform().position.x, leftBound.position.x) > xDistance) {
-            playerPosition.x = PlayerManager.instance.GetTransform().position.x + (xOffset * HorizontalFacingDirectionManager.instance.GetDirection());
-        }
-        else { }
-    }
-
-    void ClampVertical() {
-        if (math.distance(PlayerManager.instance.GetTransform().position.y, upperBound.position.y) > yDistance
-        && math.distance(PlayerManager.instance.GetTransform().position.y, lowerBound.position.y) > yDistance) {
-            playerPosition.y = PlayerManager.instance.GetTransform().position.y;
-            playerPosition.y += yOffset;
-        }
-        else { }
     }
 
 }
