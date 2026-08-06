@@ -1,10 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class Item : MonoBehaviour {
     [SerializeField] List<Door> doorsToClose = new();
     [SerializeField] GameObject reward;
 
+    void Start() {
+        gameObject.tag = "Trigger";
+        gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+    }
 
     void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("Player")) {

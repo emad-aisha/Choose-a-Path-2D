@@ -7,6 +7,8 @@ public class Water : MonoBehaviour {
     public event RespawnEvent Respawn;
 
     void Start() {
+        gameObject.tag = "Trigger";
+        gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         RespawnManager.instance.AddWaterEvent(this);
     }
 

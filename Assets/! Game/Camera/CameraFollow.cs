@@ -5,6 +5,11 @@ public class CameraFollow : MonoBehaviour {
     [SerializeField] float followPercent;
     [SerializeField] float z = -9;
 
+    [Header("Bounds")]
+    [SerializeField] BoxCollider2D bounds;
+    [SerializeField] float xDistance;
+    [SerializeField] float yDistance;
+
     [Header("X Stats")]
     [SerializeField] float xOffset;
     [SerializeField] float xSpeed;
@@ -13,11 +18,6 @@ public class CameraFollow : MonoBehaviour {
     [SerializeField] float yOffset;
     [SerializeField] float ySpeed;
     [SerializeField] float lookOffset;
-
-    [Header("Bounds")]
-    [SerializeField] float xDistance;
-    [SerializeField] float yDistance;
-    [SerializeField] BoxCollider2D bounds;
 
     Vector2 playerPosition;
     Vector2 position;
