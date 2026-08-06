@@ -16,6 +16,7 @@ public class Health : MonoBehaviour {
     [SerializeField] float IFrames;
     int currentHealth;
     bool canBeHurt = true;
+    bool isDead = false;
     static bool isTimePaused = false;
 
     public delegate void DieEvent();
@@ -28,7 +29,7 @@ public class Health : MonoBehaviour {
     }
 
     public void Hurt(int damage) {
-        if (!canBeHurt) return;
+        if (!canBeHurt || isDead) return;
         currentHealth -= damage;
 
         Debug.Log(name + " Hurt");
@@ -39,6 +40,7 @@ public class Health : MonoBehaviour {
         if (currentHealth < 0) {
             currentHealth = 0;
             Die?.Invoke();
+            isDead = true;
         }
     }
 
