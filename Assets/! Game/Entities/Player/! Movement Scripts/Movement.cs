@@ -9,6 +9,9 @@ public class Movement : Input {
     InputAction moveAction;
     bool isMoving;
 
+    float sprintMod;
+    bool isSprinting;
+
     [Header("Jump Stats")]
     [SerializeField] float jumpSpeed;
     [SerializeField] float coyoteTime;
@@ -44,6 +47,7 @@ public class Movement : Input {
         if (isMoving) {
             int moveDirection = Mathf.RoundToInt(moveAction.ReadValue<Vector2>().x);
             rigidBody.linearVelocityX = moveDirection * walkSpeed;
+            if (isSprinting) rigidBody.linearVelocityX *= sprintMod;
         }
 
         if (isJumping && rigidBody.gravityScale < maxGravity) {
@@ -75,6 +79,7 @@ public class Movement : Input {
 
         isMoving = true;
         rigidBody.linearVelocityX = moveDirection * walkSpeed;
+        if (isSprinting) rigidBody.linearVelocityX *= sprintMod;
     }
     void StopMoving(InputAction.CallbackContext context) {
         if (!canMove) return;
@@ -146,7 +151,10 @@ public class Movement : Input {
         rigidBody.gravityScale = gravity;
     }
 
+    public void SetSprinting(bool value) { isSprinting = value; }
+    public void SetSprintMod(float value) { sprintMod = value; }
 
     // GETTERS ---
+    public float GetWalkSpeed() { return walkSpeed; }
 
 }

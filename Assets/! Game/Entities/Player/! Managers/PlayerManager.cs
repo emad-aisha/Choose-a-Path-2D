@@ -4,9 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerManager : MonoBehaviour {
     public static PlayerManager instance;
-    [Header("Player Data")]
-    [SerializeField] float colliderWidth;
-    [SerializeField] float colliderHeight;
+    //("Player Data")
+    float colliderWidth;
+    float colliderHeight;
 
     [Header("Knockback")]
     [SerializeField] Health playerHealth;
@@ -60,6 +60,12 @@ public class PlayerManager : MonoBehaviour {
     public void StopPlayerGravity(float time) { StartCoroutine(movementController.StopGravity(time)); }
     public void StopPlayerGravity() { movementController.SetGravity(0); }
     public void StartPlayerGravity() { movementController.ResetGravity(); }
+
+    public float GetWalkSpeed() { return movementController.GetWalkSpeed(); }
+    public void SetPlayerSprint(bool isSprinting, float sprintMod) {
+        movementController.SetSprinting(isSprinting);
+        movementController.SetSprintMod(sprintMod);
+    }
 
 
     // attack

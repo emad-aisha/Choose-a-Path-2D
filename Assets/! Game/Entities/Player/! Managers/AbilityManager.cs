@@ -9,31 +9,28 @@ public class AbilityManager : MonoBehaviour {
     [SerializeField] Grapple grapple;
     [SerializeField] int maxInPlaceTimes;
 
+    [Header("Sprint Stats")]
+    [SerializeField] Sprint sprint;
+
 
     void Awake() {
         if (instance == null) instance = this;
-        if (grapple) grapple.StartGrapple += StartGrapple;
     }
 
     void OnDisable() {
         if (grapple) grapple.StartGrapple -= StartGrapple;
+        if (sprint) sprint.StartSprint -= StartSprint; // dont forget to set the event
+        if (sprint) sprint.EndSprint -= EndSprint; // dont forget to set the event
     }
 
-    // SETTERS
-    public void SetGrapple(Grapple _grapple, Grapple.Direction direction, float distance, float speed, float windup) {
+    // GRAPPLE ----
+    public void SetGrapple(Grapple _grapple) {
         grapple = _grapple;
-        SetGrappleDirection(direction);
-        SetGrappleDistance(distance);
-        SetGrappleSpeed(speed);
-        SetGrapleWindup(windup);
+        grapple.StartGrapple += StartGrapple;
     }
-    public void SetGrappleDirection(Grapple.Direction direction) { grapple.direction = direction; }
-    public void SetGrappleDistance(float distance) { grapple.distance = distance; }
-    public void SetGrappleSpeed(float speed) { grapple.speed = speed; }
-    public void SetGrapleWindup(float windup) { grapple.windup = windup; }
 
+    // EVENTS
     void StartGrapple() { StartCoroutine(Grapple()); }
-
     IEnumerator Grapple() {
         if (grapple.direction == global::Grapple.Direction.None) yield break;
 
@@ -48,11 +45,8 @@ public class AbilityManager : MonoBehaviour {
         Debug.DrawRay(transform.position, direction * grapple.distance, Color.green, 0.5f);
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, grapple.distance, ~grapple.ignoreLayers);
 
-
-
         // TODO: this should be enough time for the grapple animation
         yield return new WaitForSeconds(grapple.windup);
-
 
         if (hit.collider == null) { }
         else {
@@ -77,6 +71,44 @@ public class AbilityManager : MonoBehaviour {
         // unstop player
         PlayerManager.instance.SetPlayerCanMove(true);
         PlayerManager.instance.StartPlayerGravity();
+    }
+
+
+    // SPRINT ----
+    public void SetSprint(Sprint _sprint) {
+        sprint = _sprint;
+        sprint.StartSprint += StartSprint; // dont forget to set the event
+        sprint.EndSprint += EndSprint; // dont forget to set the event
+    }
+    bool stopSprinting = false;
+
+    // EVENTS
+    void StartSprint() { StartCoroutine(Sprint()); }
+    IEnumerator Sprint() {
+        stopSprinting = false;
+        float sprintMod = sprint.GetSprintMod();
+
+        Debug.Log("sprint..?");
+        float speedUp = 1;
+        float time = 0;
+        while (speedUp < sprintMod) {
+            // make this according to uhhhhhhh timetospeed
+            yield return new WaitForSeconds(Time.deltaTime / sprint.GetTimeToSpeed());
+            time += Time.deltaTime / sprint.GetTimeToSpeed();
+
+            speedUp = sprintMod * Mathf.Lerp(0, 1, time);
+            PlayerManager.instance.GetRigidbody().linearVelocityX *= speedUp;
+            Debug.Log("loop");
+            if (stopSprinting) { yield break; }
+        }
+
+        // set final sprint values
+        Debug.Log("exit?");
+        PlayerManager.instance.SetPlayerSprint(true, sprintMod);
+    }
+    void EndSprint() {
+        stopSprinting = true;
+        PlayerManager.instance.SetPlayerSprint(false, 1);
     }
 
 

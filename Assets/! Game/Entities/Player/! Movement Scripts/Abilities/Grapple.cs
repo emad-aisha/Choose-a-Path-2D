@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections;
 
 public class Grapple : Input {
     InputAction interactAction;
@@ -20,7 +19,7 @@ public class Grapple : Input {
 
 
     void Start() {
-        AbilityManager.instance.SetGrapple(this, direction, distance, speed, windup);
+        AbilityManager.instance.SetGrapple(this);
 
         interactAction = InputManager.instance.GetAction(actionName, "Interact");
         interactAction.started += Interact;
