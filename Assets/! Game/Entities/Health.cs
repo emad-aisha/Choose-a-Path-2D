@@ -22,7 +22,7 @@ public class Health : MonoBehaviour {
 
     public delegate void DieEvent();
     public event DieEvent Die; // TODO: do seperate die logic in own scripts
-    public event DieEvent Fling; // TODO: do seperate die logic in own scripts
+    public event DieEvent Fling;
 
     void Start() { currentHealth = maxHealth; }
 

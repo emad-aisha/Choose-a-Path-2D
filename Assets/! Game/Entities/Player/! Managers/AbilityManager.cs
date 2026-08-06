@@ -25,8 +25,7 @@ public class AbilityManager : MonoBehaviour {
     void OnDisable() {
         if (grapple) grapple.StartGrapple -= StartGrapple;
         if (sprint) sprint.StartSprint -= StartSprint; // dont forget to set the event
-        if (sprint) sprint.EndSprint -= EndSprint; // dont forget to set the event
-        if (jumpBoost) jumpBoost.StartJumpBoost -= ApplyJumpBoost;
+        if (sprint) sprint.EndSprint -= EndSprint;
         if (hurtBox) hurtBox.Hit -= MovementManager.instance.StartKnockback;
     }
 
@@ -129,10 +128,6 @@ public class AbilityManager : MonoBehaviour {
     // JUMP BOOST ----
     public void SetJumpBoost(JumpBoost _jumpBoost) {
         jumpBoost = _jumpBoost;
-        jumpBoost.StartJumpBoost += ApplyJumpBoost;
-    }
-
-    void ApplyJumpBoost() {
         MovementManager.instance.SetJumpValue(jumpBoost.GetJumpValue());
     }
 
