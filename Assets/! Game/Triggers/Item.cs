@@ -1,0 +1,35 @@
+using UnityEngine;
+
+public class Item : MonoBehaviour {
+    [SerializeField] GameObject reward;
+
+
+    void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("Player")) {
+            Debug.Log("Item Got Sequence");
+            GameObject physicalReward = Instantiate(reward, AbilityManager.instance.gameObject.transform);
+            GiveReward(physicalReward);
+
+            Destroy(gameObject);
+        }
+    }
+
+    void GiveReward(GameObject physicalReward) {
+        if (reward.TryGetComponent(out Grapple grapple)) {
+            AbilityManager.instance.SetGrapple(grapple);
+        }
+        else if (reward.TryGetComponent(out JumpBoost jumpBoost)) {
+            AbilityManager.instance.SetJumpBoost(jumpBoost);
+        }
+        else if (reward.TryGetComponent(out Sprint sprint)) {
+            AbilityManager.instance.SetSprint(sprint);
+        }
+        else if (reward.TryGetComponent(out Attack attack)) {
+            AbilityManager.instance.SetAttack(physicalReward);
+        }
+        else {
+            Debug.Log("Reward is not a player ability");
+        }
+    }
+
+}

@@ -27,15 +27,8 @@ public class Sprint : Input {
     }
 
     // EVENTS
-    void StartSprinting(InputAction.CallbackContext context) {
-        Debug.Log("Sprint?");
-        StartSprint?.Invoke();
-    }
-
-    void StopSprinting(InputAction.CallbackContext context) {
-        Debug.Log("stop srpitng");
-        EndSprint?.Invoke();
-    }
+    void StartSprinting(InputAction.CallbackContext context) { StartSprint?.Invoke(); }
+    void StopSprinting(InputAction.CallbackContext context) { EndSprint?.Invoke(); }
 
     // GETTERS
     public float GetSprintMod() { return sprintMod; }

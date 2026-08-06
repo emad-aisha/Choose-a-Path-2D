@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Movement : Input {
     [Header("Move Stats")]
     [SerializeField] float walkSpeed;
+    [SerializeField] float maxRunSpeed;
     InputAction moveAction;
     bool isMoving;
 
@@ -53,6 +54,8 @@ public class Movement : Input {
         if (isJumping && rigidBody.gravityScale < maxGravity) {
             rigidBody.gravityScale += gravityAcceleration * Time.deltaTime;
         }
+
+        rigidBody.linearVelocityX = Mathf.Clamp(rigidBody.linearVelocityX, -maxRunSpeed, maxRunSpeed);
     }
 
 

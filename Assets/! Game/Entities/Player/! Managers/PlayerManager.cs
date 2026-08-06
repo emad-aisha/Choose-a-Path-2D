@@ -11,7 +11,6 @@ public class PlayerManager : MonoBehaviour {
 
     [Header("Knockback")]
     [SerializeField] Health playerHealth;
-    [SerializeField] HurtBox hurtBox;
     [SerializeField] float knockback;
     [SerializeField] float knockbackTime;
 
@@ -22,12 +21,10 @@ public class PlayerManager : MonoBehaviour {
     [Header("Misc")]
     [SerializeField] Rigidbody2D playerRigidbody;
     [SerializeField] Movement movementController;
-    [SerializeField] Attack attack;
 
 
     void Awake() {
         if (instance == null) instance = this;
-        hurtBox.Hit += StartKnockback;
         playerHealth.Fling += StartKnockback;
         HorizontalFacingDirectionManager.instance.ChangeDirection += FlipPlayer;
 
@@ -36,7 +33,6 @@ public class PlayerManager : MonoBehaviour {
     }
 
     void OnDisable() {
-        hurtBox.Hit -= StartKnockback;
         playerHealth.Fling -= StartKnockback;
         HorizontalFacingDirectionManager.instance.ChangeDirection -= FlipPlayer;
     }
@@ -72,17 +68,19 @@ public class PlayerManager : MonoBehaviour {
         movementController.SetJumpSpeed(newJumpValue);
     }
 
+
     // attack
-    public Vector2 GetAttackDirection() { return attack.GetAttackDirection(); }
+    public Vector2 GetAttackDirection() {
+        if (AbilityManager.instance.GetAttack()) return AbilityManager.instance.GetAttack().GetAttackDirection();
+        else return new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized;
+    }
 
     // EVENTS
-    void StartKnockback() { StartCoroutine(SetKnockback(-GetAttackDirection())); }
-    void FlipPlayer() { StartCoroutine(FlipPlayerCoroutine()); }
+    public void StartKnockback() { StartCoroutine(SetKnockback(-GetAttackDirection())); }
+    void FlipPlayer() { StartCoroutine(AbilityManager.instance.FlipPlayerCoroutine()); }
 
     // TIMERS
     public IEnumerator SetKnockback(Vector3 direction) {
-        if (!gameObject.CompareTag("Player")) yield break;
-
         movementController.SetCanMove(false);
 
         playerRigidbody.linearVelocity = Vector2.zero;
@@ -100,15 +98,6 @@ public class PlayerManager : MonoBehaviour {
         playerRigidbody.linearDamping = 0;
         playerRigidbody.linearVelocity = Vector2.zero;
         movementController.SetCanMove(true);
-    }
-
-    IEnumerator FlipPlayerCoroutine() {
-        int safety = 0;
-        while (hurtBox.gameObject.activeSelf && safety < 200) {
-            safety++;
-            yield return new WaitForEndOfFrame();
-        }
-        transform.Rotate(0, 180, 0);
     }
 
 }

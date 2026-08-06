@@ -5,6 +5,10 @@ using UnityEngine;
 public class AbilityManager : MonoBehaviour {
     public static AbilityManager instance;
 
+    [Header("Attack Stats")]
+    [SerializeField] GameObject attack;
+    [SerializeField] HurtBox hurtBox;
+
     [Header("Grapple Stats")]
     [SerializeField] Grapple grapple;
     [SerializeField] int maxInPlaceTimes;
@@ -25,7 +29,17 @@ public class AbilityManager : MonoBehaviour {
         if (sprint) sprint.StartSprint -= StartSprint; // dont forget to set the event
         if (sprint) sprint.EndSprint -= EndSprint; // dont forget to set the event
         if (jumpBoost) jumpBoost.StartJumpBoost -= ApplyJumpBoost;
+        if (hurtBox) hurtBox.Hit -= PlayerManager.instance.StartKnockback;
     }
+
+    // ATTACK ----
+    public void SetAttack(GameObject _attack) {
+        attack = _attack;
+        hurtBox = _attack.GetComponentInChildren<HurtBox>(true);
+        hurtBox.Hit += PlayerManager.instance.StartKnockback;
+        hurtBox.gameObject.SetActive(false);
+    }
+    public Attack GetAttack() { return attack.GetComponent<Attack>(); }
 
     // GRAPPLE ----
     public void SetGrapple(Grapple _grapple) {
@@ -92,22 +106,18 @@ public class AbilityManager : MonoBehaviour {
         stopSprinting = false;
         float sprintMod = sprint.GetSprintMod();
 
-        Debug.Log("sprint..?");
         float speedUp = 1;
         float time = 0;
         while (speedUp < sprintMod) {
-            // make this according to uhhhhhhh timetospeed
             yield return new WaitForSeconds(Time.deltaTime / sprint.GetTimeToSpeed());
             time += Time.deltaTime / sprint.GetTimeToSpeed();
 
             speedUp = sprintMod * Mathf.Lerp(0, 1, time);
             PlayerManager.instance.GetRigidbody().linearVelocityX *= speedUp;
-            Debug.Log("loop");
             if (stopSprinting) { yield break; }
         }
 
         // set final sprint values
-        Debug.Log("exit?");
         PlayerManager.instance.SetPlayerSprint(true, sprintMod);
     }
     void EndSprint() {
@@ -125,4 +135,14 @@ public class AbilityManager : MonoBehaviour {
         PlayerManager.instance.SetJumpValue(jumpBoost.GetJumpValue());
     }
 
+
+    // EVENT
+    public IEnumerator FlipPlayerCoroutine() {
+        int safety = 0;
+        while (hurtBox != null && hurtBox.gameObject.activeSelf && safety < 200) {
+            safety++;
+            yield return new WaitForEndOfFrame();
+        }
+        PlayerManager.instance.GetTransform().Rotate(0, 180, 0);
+    }
 }

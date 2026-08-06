@@ -12,6 +12,7 @@ public class HurtBox : MonoBehaviour {
         // ignore self
         if (!collision.CompareTag(gameObject.tag) && collision.TryGetComponent(out Health health)) {
 
+            //if (gameObject.CompareTag("Player")) PlayerManager.instance.StartKnockback();
             Hit?.Invoke();
             health.Hurt(damage);
         }
