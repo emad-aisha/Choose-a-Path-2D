@@ -154,6 +154,8 @@ public class Movement : Input {
     public void SetSprinting(bool value) { isSprinting = value; }
     public void SetSprintMod(float value) { sprintMod = value; }
 
+    public void SetJumpSpeed(float value) { jumpSpeed = value; }
+
     // GETTERS ---
     public float GetWalkSpeed() { return walkSpeed; }
 

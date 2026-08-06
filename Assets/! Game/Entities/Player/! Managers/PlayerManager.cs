@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+// TODO: seperate into a movement manager
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerManager : MonoBehaviour {
     public static PlayerManager instance;
@@ -67,6 +68,9 @@ public class PlayerManager : MonoBehaviour {
         movementController.SetSprintMod(sprintMod);
     }
 
+    public void SetJumpValue(float newJumpValue) {
+        movementController.SetJumpSpeed(newJumpValue);
+    }
 
     // attack
     public Vector2 GetAttackDirection() { return attack.GetAttackDirection(); }

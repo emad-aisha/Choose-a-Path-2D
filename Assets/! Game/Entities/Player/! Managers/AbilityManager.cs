@@ -12,6 +12,9 @@ public class AbilityManager : MonoBehaviour {
     [Header("Sprint Stats")]
     [SerializeField] Sprint sprint;
 
+    [Header("Jump Stats")]
+    [SerializeField] JumpBoost jumpBoost;
+
 
     void Awake() {
         if (instance == null) instance = this;
@@ -21,6 +24,7 @@ public class AbilityManager : MonoBehaviour {
         if (grapple) grapple.StartGrapple -= StartGrapple;
         if (sprint) sprint.StartSprint -= StartSprint; // dont forget to set the event
         if (sprint) sprint.EndSprint -= EndSprint; // dont forget to set the event
+        if (jumpBoost) jumpBoost.StartJumpBoost -= ApplyJumpBoost;
     }
 
     // GRAPPLE ----
@@ -111,5 +115,14 @@ public class AbilityManager : MonoBehaviour {
         PlayerManager.instance.SetPlayerSprint(false, 1);
     }
 
+    // JUMP BOOST ----
+    public void SetJumpBoost(JumpBoost _jumpBoost) {
+        jumpBoost = _jumpBoost;
+        jumpBoost.StartJumpBoost += ApplyJumpBoost;
+    }
+
+    void ApplyJumpBoost() {
+        PlayerManager.instance.SetJumpValue(jumpBoost.GetJumpValue());
+    }
 
 }
