@@ -19,9 +19,9 @@ public class MovementManager : MonoBehaviour {
         playerHealth.Fling += StartKnockback;
     }
 
-    void OnDisable() {
-        playerHealth.Fling -= StartKnockback;
-    }
+    void OnDisable() { playerHealth.Fling -= StartKnockback; }
+
+    public Health GetHealth() { return playerHealth; }
 
     // GETTERS
     public ref Rigidbody2D GetRigidbody() { return ref playerRigidbody; }

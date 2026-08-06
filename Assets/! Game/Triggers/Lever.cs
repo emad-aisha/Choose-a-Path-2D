@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
@@ -6,8 +5,7 @@ using UnityEngine;
 public class Lever : MonoBehaviour {
     [Header("Basic Stats")]
     [SerializeField] Health health;
-    [SerializeField] List<Door> doorsToOpen = new();
-    [SerializeField] List<Door> doorsToClose = new();
+    [SerializeField] Door doorToToggle;
 
     void Start() {
         health.Die += Flip;
@@ -19,13 +17,7 @@ public class Lever : MonoBehaviour {
 
     void Flip() {
         gameObject.tag = "Trigger";
-        for (int i = 0; i < doorsToOpen.Count; i++) {
-            doorsToOpen[i].SetOpen(true);
-        }
-
-        for (int i = 0; i < doorsToClose.Count; i++) {
-            doorsToClose[i].SetOpen(false);
-        }
+        doorToToggle.SetNotOpen();
     }
 
 }

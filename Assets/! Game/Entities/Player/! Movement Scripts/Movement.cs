@@ -143,6 +143,8 @@ public class Movement : Input {
     }
     public void SetCanMove(bool value) {
         canMove = value;
+
+        if (!canMove) rigidBody.linearVelocity = Vector2.zero;
     }
 
     public void SetGravity(float newGravity) { rigidBody.gravityScale = newGravity; }
@@ -161,5 +163,7 @@ public class Movement : Input {
 
     // GETTERS ---
     public float GetWalkSpeed() { return walkSpeed; }
+    public bool GetCanMove() { return canMove; }
+
 
 }

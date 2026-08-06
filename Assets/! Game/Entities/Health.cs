@@ -2,6 +2,11 @@ using System.Collections;
 using UnityEngine;
 
 public class Health : MonoBehaviour {
+    [Header("Basic Stats")]
+    [SerializeField] int maxHealth;
+    [SerializeField] float IFrames;
+    int currentHealth;
+
     [SerializeField] float stunTime = 0.1f;
 
     [Header("visualizer")]
@@ -11,10 +16,6 @@ public class Health : MonoBehaviour {
     [SerializeField] Color iFramesColor1 = Color.gray2;
     [SerializeField] Color iFramesColor2 = Color.gray5;
 
-    [Header("Basic Stats")]
-    [SerializeField] int maxHealth;
-    [SerializeField] float IFrames;
-    int currentHealth;
     bool canBeHurt = true;
     bool isDead = false;
     static bool isTimePaused = false;
@@ -22,6 +23,8 @@ public class Health : MonoBehaviour {
     public delegate void DieEvent();
     public event DieEvent Die; // TODO: do seperate die logic in own scripts
     public event DieEvent Fling; // TODO: do seperate die logic in own scripts
+
+    void Start() { currentHealth = maxHealth; }
 
     void OnDisable() {
         Die = null;

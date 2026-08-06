@@ -38,7 +38,10 @@ public class AbilityManager : MonoBehaviour {
         hurtBox.Hit += MovementManager.instance.StartKnockback;
         hurtBox.gameObject.SetActive(false);
     }
-    public Attack GetAttack() { return attack.GetComponent<Attack>(); }
+    public Attack GetAttack() {
+        if (!attack) return null;
+        return attack.GetComponent<Attack>();
+    }
 
 
     // GRAPPLE ----

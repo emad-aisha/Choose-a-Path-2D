@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerManager : MonoBehaviour {
     public static PlayerManager instance;
-    
+
     //("Player Data")
     float colliderWidth;
     float colliderHeight;
@@ -34,6 +34,8 @@ public class PlayerManager : MonoBehaviour {
         if (AbilityManager.instance.GetAttack()) return AbilityManager.instance.GetAttack().GetAttackDirection();
         else return new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized;
     }
+
+    public Health GetHealth() { return MovementManager.instance.GetHealth(); }
 
     // TRIGGERS
     public ref Trigger GetBody() { return ref body; }

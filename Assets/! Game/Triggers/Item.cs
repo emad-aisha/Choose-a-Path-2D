@@ -1,16 +1,26 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Item : MonoBehaviour {
+    [SerializeField] List<Door> doorsToClose = new();
     [SerializeField] GameObject reward;
 
 
     void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("Player")) {
+            CloseDoors();
+
             Debug.Log("Item Got Sequence");
             GameObject physicalReward = Instantiate(reward, AbilityManager.instance.gameObject.transform);
             GiveReward(physicalReward);
 
             Destroy(gameObject);
+        }
+    }
+
+    void CloseDoors() {
+        for (int i = 0; i < doorsToClose.Count; i++) {
+            doorsToClose[i].SetOpen(false);
         }
     }
 
@@ -31,5 +41,6 @@ public class Item : MonoBehaviour {
             Debug.Log("Reward is not a player ability");
         }
     }
+
 
 }
