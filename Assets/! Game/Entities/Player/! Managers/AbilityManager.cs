@@ -15,31 +15,31 @@ public class AbilityManager : MonoBehaviour {
 
     [Header("Sprint Stats")]
     [SerializeField] Sprint sprint;
+    bool stopSprinting = false;
 
     [Header("Jump Stats")]
     [SerializeField] JumpBoost jumpBoost;
 
 
-    void Awake() {
-        if (instance == null) instance = this;
-    }
-
+    void Awake() { if (instance == null) instance = this; }
     void OnDisable() {
         if (grapple) grapple.StartGrapple -= StartGrapple;
         if (sprint) sprint.StartSprint -= StartSprint; // dont forget to set the event
         if (sprint) sprint.EndSprint -= EndSprint; // dont forget to set the event
         if (jumpBoost) jumpBoost.StartJumpBoost -= ApplyJumpBoost;
-        if (hurtBox) hurtBox.Hit -= PlayerManager.instance.StartKnockback;
+        if (hurtBox) hurtBox.Hit -= MovementManager.instance.StartKnockback;
     }
+
 
     // ATTACK ----
     public void SetAttack(GameObject _attack) {
         attack = _attack;
         hurtBox = _attack.GetComponentInChildren<HurtBox>(true);
-        hurtBox.Hit += PlayerManager.instance.StartKnockback;
+        hurtBox.Hit += MovementManager.instance.StartKnockback;
         hurtBox.gameObject.SetActive(false);
     }
     public Attack GetAttack() { return attack.GetComponent<Attack>(); }
+
 
     // GRAPPLE ----
     public void SetGrapple(Grapple _grapple) {
@@ -47,7 +47,6 @@ public class AbilityManager : MonoBehaviour {
         grapple.StartGrapple += StartGrapple;
     }
 
-    // EVENTS
     void StartGrapple() { StartCoroutine(Grapple()); }
     IEnumerator Grapple() {
         if (grapple.direction == global::Grapple.Direction.None) yield break;
@@ -58,8 +57,8 @@ public class AbilityManager : MonoBehaviour {
             _ => Vector2.zero
         };
 
-        PlayerManager.instance.StopPlayerGravity();
-        PlayerManager.instance.SetPlayerCanMove(false);
+        MovementManager.instance.StopPlayerGravity();
+        MovementManager.instance.SetPlayerCanMove(false);
         Debug.DrawRay(transform.position, direction * grapple.distance, Color.green, 0.5f);
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, grapple.distance, ~grapple.ignoreLayers);
 
@@ -75,7 +74,7 @@ public class AbilityManager : MonoBehaviour {
             while ((grapple.direction == global::Grapple.Direction.Side && math.distance(playerPosition, hit.point) > (PlayerManager.instance.GetPlayerWidth() / 2)) ||
                     (grapple.direction == global::Grapple.Direction.Up && math.distance(playerPosition, hit.point) > (PlayerManager.instance.GetPlayerHeight() / 2))) {
 
-                PlayerManager.instance.GetRigidbody().linearVelocity = direction * grapple.speed;
+                MovementManager.instance.GetRigidbody().linearVelocity = direction * grapple.speed;
                 playerPosition = transform.position; // update player pos
 
                 if (lastPlayerPosition == playerPosition) timesInPlace++;
@@ -87,8 +86,8 @@ public class AbilityManager : MonoBehaviour {
         }
 
         // unstop player
-        PlayerManager.instance.SetPlayerCanMove(true);
-        PlayerManager.instance.StartPlayerGravity();
+        MovementManager.instance.SetPlayerCanMove(true);
+        MovementManager.instance.StartPlayerGravity();
     }
 
 
@@ -98,9 +97,7 @@ public class AbilityManager : MonoBehaviour {
         sprint.StartSprint += StartSprint; // dont forget to set the event
         sprint.EndSprint += EndSprint; // dont forget to set the event
     }
-    bool stopSprinting = false;
 
-    // EVENTS
     void StartSprint() { StartCoroutine(Sprint()); }
     IEnumerator Sprint() {
         stopSprinting = false;
@@ -113,17 +110,18 @@ public class AbilityManager : MonoBehaviour {
             time += Time.deltaTime / sprint.GetTimeToSpeed();
 
             speedUp = sprintMod * Mathf.Lerp(0, 1, time);
-            PlayerManager.instance.GetRigidbody().linearVelocityX *= speedUp;
+            MovementManager.instance.GetRigidbody().linearVelocityX *= speedUp;
             if (stopSprinting) { yield break; }
         }
 
         // set final sprint values
-        PlayerManager.instance.SetPlayerSprint(true, sprintMod);
+        MovementManager.instance.SetPlayerSprint(true, sprintMod);
     }
     void EndSprint() {
         stopSprinting = true;
-        PlayerManager.instance.SetPlayerSprint(false, 1);
+        MovementManager.instance.SetPlayerSprint(false, 1);
     }
+
 
     // JUMP BOOST ----
     public void SetJumpBoost(JumpBoost _jumpBoost) {
@@ -132,11 +130,11 @@ public class AbilityManager : MonoBehaviour {
     }
 
     void ApplyJumpBoost() {
-        PlayerManager.instance.SetJumpValue(jumpBoost.GetJumpValue());
+        MovementManager.instance.SetJumpValue(jumpBoost.GetJumpValue());
     }
 
 
-    // EVENT
+    // HELPER
     public IEnumerator FlipPlayerCoroutine() {
         int safety = 0;
         while (hurtBox != null && hurtBox.gameObject.activeSelf && safety < 200) {
@@ -145,4 +143,5 @@ public class AbilityManager : MonoBehaviour {
         }
         PlayerManager.instance.GetTransform().Rotate(0, 180, 0);
     }
+
 }
