@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -38,6 +37,7 @@ public class FollowPlayer : MonoBehaviour {
             enemyRigidbody.linearVelocity -= new Vector2(slowDownSpeed * xDirection, slowDownSpeed * yDirection) * Time.deltaTime;
         }
     }
+
 
     // collision hurt
     void OnTriggerEnter2D(Collider2D collision) {
