@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6212158355672173585}
   - component: {fileID: 5695507159050371563}
   - component: {fileID: 2313903317610566360}
-  - component: {fileID: 817477139244631119}
+  - component: {fileID: 3775936535757049863}
   - component: {fileID: 5898488715479895285}
   - component: {fileID: 8078211242045837018}
   - component: {fileID: 163028388308018733}
@@ -94,7 +94,7 @@ MonoBehaviour:
   timeBetweenShots: 0.4
   lifespan: 3
   speed: 8
---- !u!114 &817477139244631119
+--- !u!114 &3775936535757049863
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,10 +103,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2026129508300909846}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de439ee48ef44ee43a7fc39598518d3e, type: 3}
+  m_Script: {fileID: 11500000, guid: b0ddc0d57650ab547800bd68f13d3ac9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CollisionAttack
-  damage: 1
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 1
+  IFrames: 0
+  sprite: {fileID: 0}
+  flashTimes: 0
+  deathColor: {r: 0.5450981, g: 0, b: 0, a: 1}
+  iFramesColor1: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  iFramesColor2: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!50 &5898488715479895285
 Rigidbody2D:
   serializedVersion: 5

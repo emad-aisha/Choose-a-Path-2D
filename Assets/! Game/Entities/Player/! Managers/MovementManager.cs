@@ -54,7 +54,6 @@ public class MovementManager : MonoBehaviour {
         if (Time.timeScale == 0) yield break;
         yield return StartCoroutine(StunTime());
         movementController.SetCanMove(false);
-        Debug.Log(" direction: " + direction);
 
         playerRigidbody.linearVelocity = Vector2.zero;
         playerRigidbody.linearVelocity = direction * knockback;
