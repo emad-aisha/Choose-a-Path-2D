@@ -39,11 +39,4 @@ public class FollowPlayer : MonoBehaviour {
     }
 
 
-    // collision hurt
-    void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.CompareTag("Player") && collision.gameObject.TryGetComponent(out Health playerHealth)) {
-            playerHealth.Hurt(1);
-        }
-    }
-
 }
