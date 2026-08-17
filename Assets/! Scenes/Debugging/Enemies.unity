@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 92392597}
   - component: {fileID: 92392596}
+  - component: {fileID: 92392599}
   - component: {fileID: 92392598}
   - component: {fileID: 92392595}
   - component: {fileID: 92392594}
@@ -189,7 +190,7 @@ SpriteRenderer:
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: ebb12bde5939b40478997e7a28c7de7d, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.88352054, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -269,7 +270,7 @@ Transform:
   m_GameObject: {fileID: 92392593}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 6, z: 0}
+  m_LocalPosition: {x: 2.5, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -303,6 +304,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &92392599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92392593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bdb359cb6063f0479c85bb361073502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireballAttack
+  attackRange: 3
+  damage: 1
+  windup: 0.2
+  cooldown: 4
+  fireballPrefab: {fileID: 2034267786190709722, guid: 5a71e8506b7b95f44af2748112974ba3, type: 3}
+  numberOfFireballs: 3
+  timeBetweenShots: 0.3
+  lifespan: 3
+  speed: 8
 --- !u!1 &358280075
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,7 +428,7 @@ GameObject:
   - component: {fileID: 490714119}
   - component: {fileID: 490714118}
   m_Layer: 3
-  m_Name: Wall Collider
+  m_Name: Player Collider
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

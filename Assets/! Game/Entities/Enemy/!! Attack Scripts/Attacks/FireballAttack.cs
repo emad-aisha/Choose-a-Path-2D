@@ -43,7 +43,7 @@ public class FireballAttack : BasicAttack {
             GameObject fireballObject = Instantiate(fireballPrefab, attackPosition, Quaternion.identity);
             Fireball fireball = fireballObject.GetComponent<Fireball>();
             fireball.SetData(speed, damage, attackPosition);
-            StartCoroutine(fireball.LifeSpan(lifespan));
+            fireball.StartLife(lifespan);
 
             yield return new WaitForSeconds(timeBetweenShots);
         }

@@ -14,6 +14,7 @@ public abstract class BasicAttack : MonoBehaviour {
     protected bool standStill = false;
 
     void Update() {
+        // TODO: DO a line of sight check
         if ((math.distance(transform.position, PlayerManager.instance.GetTransform().position) <= attackRange) && canAttack) Attack();
     }
 
