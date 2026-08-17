@@ -8,6 +8,8 @@ public class MovementManager : MonoBehaviour {
     [SerializeField] Health playerHealth;
     [SerializeField] float knockback;
     [SerializeField] float knockbackTime;
+    // TODO: move somwhere else
+    [SerializeField] float stunTime = 0.1f;
 
     [Header("Misc")]
     [SerializeField] Rigidbody2D playerRigidbody;
@@ -18,8 +20,6 @@ public class MovementManager : MonoBehaviour {
         if (instance == null) instance = this;
         playerHealth.Fling += StartKnockback;
     }
-
-    void OnDisable() { playerHealth.Fling -= StartKnockback; }
 
     public Health GetHealth() { return playerHealth; }
 
@@ -47,9 +47,14 @@ public class MovementManager : MonoBehaviour {
     }
 
     // KNOCKBACK
-    public void StartKnockback() { StartCoroutine(SetKnockback(-PlayerManager.instance.GetAttackDirection())); }
-    public IEnumerator SetKnockback(Vector3 direction) {
+    public void StartKnockback() {
+        StartCoroutine(SetKnockback(-PlayerManager.instance.GetAttackDirection()));
+    }
+    IEnumerator SetKnockback(Vector3 direction) {
+        if (Time.timeScale == 0) yield break;
+        yield return StartCoroutine(StunTime());
         movementController.SetCanMove(false);
+        Debug.Log(" direction: " + direction);
 
         playerRigidbody.linearVelocity = Vector2.zero;
         playerRigidbody.linearVelocity = direction * knockback;
@@ -66,6 +71,13 @@ public class MovementManager : MonoBehaviour {
         playerRigidbody.linearDamping = 0;
         playerRigidbody.linearVelocity = Vector2.zero;
         movementController.SetCanMove(true);
+    }
+
+    IEnumerator StunTime() {
+        float originalTimeScale = Time.timeScale;
+        Time.timeScale = 0;
+        yield return new WaitForSecondsRealtime(stunTime);
+        Time.timeScale = originalTimeScale;
     }
 
 }

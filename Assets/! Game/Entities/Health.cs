@@ -7,8 +7,6 @@ public class Health : MonoBehaviour {
     [SerializeField] float IFrames;
     int currentHealth;
 
-    [SerializeField] float stunTime = 0.1f;
-
     [Header("visualizer")]
     [SerializeField] SpriteRenderer sprite;
     [SerializeField] int flashTimes;
@@ -18,7 +16,6 @@ public class Health : MonoBehaviour {
 
     bool canBeHurt = true;
     bool isDead = false;
-    static bool isTimePaused = false;
 
     public delegate void DieEvent();
     public event DieEvent Die; // TODO: do seperate die logic in own scripts
@@ -36,14 +33,17 @@ public class Health : MonoBehaviour {
         currentHealth -= damage;
 
         Debug.Log(name + " Hurt");
-        if (!isTimePaused) StartCoroutine(StunTime());
         StartCoroutine(StartIFrame());
+        MovementManager.instance.StartKnockback();
         Fling?.Invoke();
 
-        if (currentHealth < 0) {
+        if (currentHealth <= 0) {
             currentHealth = 0;
             Die?.Invoke();
             isDead = true;
+            if (gameObject.CompareTag("Enemy")) {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -55,9 +55,6 @@ public class Health : MonoBehaviour {
             currentHealth = maxHealth;
         }
     }
-
-    // GETTERS
-    public bool IsTimePaused() { return isTimePaused; }
 
 
     // TIMERS
@@ -76,15 +73,6 @@ public class Health : MonoBehaviour {
 
         SetColor(Color.white);
         canBeHurt = true;
-    }
-
-    IEnumerator StunTime() {
-        isTimePaused = true;
-        float originalTimeScale = Time.timeScale;
-        Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(stunTime);
-        Time.timeScale = originalTimeScale;
-        isTimePaused = false;
     }
 
     void SetColor(Color color) { if (sprite) sprite.color = color; }

@@ -32,7 +32,7 @@ public class PlayerManager : MonoBehaviour {
 
     public Vector2 GetAttackDirection() {
         if (AbilityManager.instance.GetAttack()) return AbilityManager.instance.GetAttack().GetAttackDirection();
-        else return new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized;
+        else return new Vector2(Random.Range(-1, 2), Random.Range(-1, 2)).normalized;
     }
 
     public Health GetHealth() { return MovementManager.instance.GetHealth(); }

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b501245d9df3c164e97c34a0e4cfb9f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HurtBox
-  damage: 0
+  damage: 1
 --- !u!212 &5394463172581475960
 SpriteRenderer:
   serializedVersion: 2

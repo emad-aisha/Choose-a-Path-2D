@@ -16,7 +16,6 @@ public class HurtBox : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D collision) {
         // ignore self
         if (!collision.CompareTag(gameObject.tag) && collision.TryGetComponent(out Health health)) {
-
             Hit?.Invoke();
             health.Hurt(damage);
         }

@@ -21,6 +21,7 @@ public class Attack : Input {
 
 
     void Start() {
+        AbilityManager.instance.SetAttack(gameObject);
         attackAction = InputManager.instance.GetAction(actionName, "Attack");
         faceAction = InputManager.instance.GetAction(actionName, "Move");
         attackAction.performed += StartAttack;

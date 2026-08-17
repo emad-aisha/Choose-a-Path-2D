@@ -21,7 +21,7 @@ public class Water : MonoBehaviour {
             playerHealth.Hurt(1);
             Respawn?.Invoke();
         }
-        else if (collision.gameObject.TryGetComponent(out Health enemyHealth)) {
+        else if (collision.CompareTag("Enemy") && collision.gameObject.TryGetComponent(out Health enemyHealth)) {
             enemyHealth.Hurt(10000);
         }
     }
