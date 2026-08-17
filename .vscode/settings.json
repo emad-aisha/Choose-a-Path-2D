@@ -76,7 +76,7 @@
         },
         {
             "path": "Choose a Path 2D\\Assets\\! Game\\Entities\\Enemy\\",
-            "color": "foldercustomization.AnsiColor208"
+            "color": "foldercustomization.AnsiColor136"
         },
         {
             "path": "Choose a Path 2D\\Assets\\! Game\\! Abstract\\",
@@ -112,6 +112,14 @@
         {
             "path": "Choose a Path 2D\\Assets\\Tile Maps\\",
             "color": "foldercustomization.AnsiColor8"
+        },
+        {
+            "path": "Choose a Path 2D\\Assets\\! Game\\Entities\\Enemy\\!! Attack Scripts\\",
+            "color": "foldercustomization.AnsiColor150"
+        },
+        {
+            "path": "Choose a Path 2D\\Assets\\! Game\\Entities\\Enemy\\!! Movement Script\\",
+            "color": "foldercustomization.AnsiColor36"
         }
     ],
     "todo-tree.ripgrep.ripgrep": "C:\\ProgramData\\chocolatey\\lib\\ripgrep\\tools\\ripgrep-14.1.0-x86_64-pc-windows-msvc\\rg.exe"

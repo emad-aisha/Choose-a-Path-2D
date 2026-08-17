@@ -3,9 +3,12 @@ using UnityEngine;
 using Unity.Mathematics;
 
 public abstract class BasicAttack : MonoBehaviour {
+    [SerializeField] LayerMask ignoreLayer;
+
     [Header("Basic Stats")]
     [SerializeField] protected float attackRange;
     [SerializeField] protected int damage;
+    [SerializeField] bool lineOfSiteNeeded;
 
     [Header("Timers")]
     [SerializeField] protected float windup;
@@ -15,7 +18,10 @@ public abstract class BasicAttack : MonoBehaviour {
 
     void Update() {
         // TODO: DO a line of sight check
-        if ((math.distance(transform.position, PlayerManager.instance.GetTransform().position) <= attackRange) && canAttack) Attack();
+        Debug.DrawRay(transform.position, (PlayerManager.instance.GetTransform().position - transform.position).normalized * attackRange, Color.red);
+
+        if (CheckLineOfSite())
+            if ((math.distance(transform.position, PlayerManager.instance.GetTransform().position) <= attackRange) && canAttack) Attack();
     }
 
     public abstract void Attack();
@@ -25,6 +31,14 @@ public abstract class BasicAttack : MonoBehaviour {
         canAttack = false;
         yield return new WaitForSeconds(cooldown);
         canAttack = true;
+    }
+
+    bool CheckLineOfSite() {
+        if (!lineOfSiteNeeded) return true;
+        else {
+            RaycastHit2D raycast = Physics2D.Raycast(transform.position, (PlayerManager.instance.GetTransform().position - transform.position).normalized, attackRange, ~ignoreLayer);
+            return raycast.collider && raycast.collider.CompareTag("Player");
+        }
     }
 
 }
