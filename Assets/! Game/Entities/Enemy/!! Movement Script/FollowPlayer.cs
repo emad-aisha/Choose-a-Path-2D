@@ -20,7 +20,10 @@ public class FollowPlayer : MonoBehaviour {
         GetComponent<BoxCollider2D>().isTrigger = true;
 
         playerPosition = PlayerManager.instance.GetTransform().position;
+
         enemyRigidbody = GetComponent<Rigidbody2D>();
+        enemyRigidbody.freezeRotation = true;
+        enemyRigidbody.gravityScale = 0;
     }
 
     void Update() {
