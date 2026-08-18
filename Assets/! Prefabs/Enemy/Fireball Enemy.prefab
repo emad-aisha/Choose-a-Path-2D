@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f2f4006adb63c64bb434d0ef9cf847f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bob
-  speed: 3
+  speed: 2
   height: 0.5
 --- !u!114 &5695507159050371563
 MonoBehaviour:
@@ -89,11 +89,12 @@ MonoBehaviour:
   lineOfSiteNeeded: 1
   windup: 0.2
   cooldown: 4
-  fireballPrefab: {fileID: 2034267786190709722, guid: 5a71e8506b7b95f44af2748112974ba3, type: 3}
+  prefab: {fileID: 0}
   numberOfFireballs: 3
   timeBetweenShots: 0.4
   lifespan: 3
   speed: 8
+  acceleration: 0
 --- !u!114 &3775936535757049863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,13 +107,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0ddc0d57650ab547800bd68f13d3ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 1
-  IFrames: 0
   sprite: {fileID: 0}
+  maxHealth: 1
+  hurtTime: 0.1
+  hurtColor: {r: 0.5450981, g: 0, b: 0, a: 1}
+  IFrames: 0
   flashTimes: 0
-  deathColor: {r: 0.5450981, g: 0, b: 0, a: 1}
-  iFramesColor1: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-  iFramesColor2: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  iFramesColor:
+  - {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  - {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!50 &5898488715479895285
 Rigidbody2D:
   serializedVersion: 5

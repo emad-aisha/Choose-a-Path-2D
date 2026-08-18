@@ -13,25 +13,10 @@ public class FireballAttack : BasicAttack {
     [SerializeField, Range(4, 8)] int speed;
     [SerializeField, Range(0, 0.5f)] float acceleration;
 
-    Vector3 attackPosition;
 
-    void LateUpdate() {
-        if (standStill) {
-            transform.position = attackPosition;
-        }
-    }
-
-    override public void Attack() {
-        StartCoroutine(AtttackSequence());
-    }
-
-
-    // attack timer
-    protected IEnumerator AtttackSequence() {
-        canAttack = false;
-        attackPosition = transform.position;
+    // attack logic
+    override protected IEnumerator AttackLogic() {
         standStill = true;
-        yield return new WaitForSeconds(windup); // TODO: windup anim
 
         if (prefab.TryGetComponent(out Boomerang boomerang)) {
             StartCoroutine(WaitLonger());
@@ -42,17 +27,15 @@ public class FireballAttack : BasicAttack {
         }
 
         standStill = false;
-
-        StartCoroutine(AttackCooldown());
     }
 
 
     // fireball timer
     IEnumerator SpawnFireballs() {
         for (int i = 0; i < numberOfFireballs; i++) {
-            GameObject fireballObject = Instantiate(prefab, attackPosition, Quaternion.identity);
+            GameObject fireballObject = Instantiate(prefab, stopPosition, Quaternion.identity);
             Fireball fireball = fireballObject.GetComponent<Fireball>();
-            fireball.SetData(speed, damage, attackPosition);
+            fireball.SetData(speed, damage, stopPosition);
             fireball.StartLife(lifespan);
 
             yield return new WaitForSeconds(timeBetweenShots);
@@ -63,9 +46,9 @@ public class FireballAttack : BasicAttack {
     // boomerang timers
     IEnumerator SpawnBoomerangs() {
         for (int i = 0; i < numberOfFireballs; i++) {
-            GameObject boomerangObject = Instantiate(prefab, attackPosition, Quaternion.identity);
+            GameObject boomerangObject = Instantiate(prefab, stopPosition, Quaternion.identity);
             Boomerang boomerang = boomerangObject.GetComponent<Boomerang>();
-            boomerang.SetData(speed, acceleration, damage, attackPosition);
+            boomerang.SetData(speed, acceleration, damage, stopPosition);
             boomerang.StartLife(lifespan);
             boomerang.StartComeback(transform.position);
 
