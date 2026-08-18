@@ -164,6 +164,6 @@ public class Movement : Input {
     // GETTERS ---
     public float GetWalkSpeed() { return walkSpeed; }
     public bool GetCanMove() { return canMove; }
-
+    public bool IsFalling() { return rigidBody.linearVelocityY < -10; }
 
 }

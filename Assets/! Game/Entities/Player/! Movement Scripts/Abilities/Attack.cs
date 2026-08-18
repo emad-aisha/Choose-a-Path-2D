@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,7 @@ public class Attack : Input {
     [SerializeField] GameObject hitBox;
     [SerializeField] float timeOnScreen;
     [SerializeField] float attackOffset = 1;
+    [SerializeField] float verticalAttackOffset = 2;
 
     InputAction faceAction;
     Vector2 facingDirection;
@@ -37,28 +39,31 @@ public class Attack : Input {
     void AttackDirection() {
         if (hitBox.activeSelf) return; // dont change direction when shown
         facingDirection = faceAction.ReadValue<Vector2>();
+        int roundedY = Mathf.RoundToInt(facingDirection.y);
+        int roundedX = Mathf.RoundToInt(facingDirection.x);
+        hitBox.transform.position = PlayerManager.instance.GetTransform().position;
 
         // attack vertically
         if (facingDirection.y != 0) {
-            hitBox.transform.position = PlayerManager.instance.GetTransform().position;
 
             // if facing down and not on ground OR facing up
-            if ((facingDirection.y < 0 && !PlayerManager.instance.IsGrounded()) || facingDirection.y > 0) {
-                hitBox.transform.position += new Vector3(0, facingDirection.y * attackOffset);
+            if ((roundedY < 0 && !PlayerManager.instance.IsGrounded()) || roundedY > 0) {
+                Debug.Log("vertical attack");
+                hitBox.transform.position += new Vector3(0, roundedY * verticalAttackOffset);
                 attackDirection.x = 0;
-                attackDirection.y = facingDirection.y;
+                attackDirection.y = roundedY;
             }
             else {
+                Debug.Log("grounded forced sideways attack");
                 // attack horizontally
-                hitBox.transform.position = PlayerManager.instance.GetTransform().position;
-                hitBox.transform.position += new Vector3(facingDirection.x * attackOffset, 0);
-                attackDirection.x = facingDirection.x;
+                hitBox.transform.position += new Vector3(HorizontalFacingDirectionManager.instance.GetDirection() * attackOffset, 0);
+                attackDirection.x = HorizontalFacingDirectionManager.instance.GetDirection();
                 attackDirection.y = 0;
             }
         }
         else {
             // attack horizontally
-            hitBox.transform.position = PlayerManager.instance.GetTransform().position;
+            Debug.Log("default attack");
             hitBox.transform.position += new Vector3(HorizontalFacingDirectionManager.instance.GetDirection() * attackOffset, 0);
             attackDirection.x = HorizontalFacingDirectionManager.instance.GetDirection();
             attackDirection.y = 0;

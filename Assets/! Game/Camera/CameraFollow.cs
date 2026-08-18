@@ -18,6 +18,7 @@ public class CameraFollow : MonoBehaviour {
     [SerializeField] float yOffset;
     [SerializeField] float ySpeed;
     [SerializeField] float lookOffset;
+    [SerializeField] float requiredTimeFalling;
 
     Vector2 playerPosition;
     Vector2 position;
@@ -31,6 +32,7 @@ public class CameraFollow : MonoBehaviour {
 
         transform.position = position;
         LookCheck();
+        FallCheck();
     }
 
 
@@ -54,9 +56,19 @@ public class CameraFollow : MonoBehaviour {
         if (VerticalFacingDirectionManager.instance.GetDirection() != 0) {
             Vector2 modifiedPosition = playerPosition;
             modifiedPosition.y += lookOffset * VerticalFacingDirectionManager.instance.GetDirection();
-            transform.position = Vector3.Lerp(transform.position, modifiedPosition, followPercent * xSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, modifiedPosition, followPercent * ySpeed * Time.deltaTime);
         }
         transform.position = new Vector3(transform.position.x, transform.position.y, z);
     }
 
+    void FallCheck() {
+        // if is falling
+        if (MovementManager.instance.IsFalling(requiredTimeFalling)) {
+            Vector2 modifiedPosition = playerPosition;
+            modifiedPosition.y -= 3; // look down
+            transform.position = Vector3.Lerp(transform.position, modifiedPosition, followPercent * (ySpeed / 2) * Time.deltaTime);
+        }
+
+        transform.position = new Vector3(transform.position.x, transform.position.y, z);
+    }
 }

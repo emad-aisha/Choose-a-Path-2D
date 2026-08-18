@@ -46,6 +46,22 @@ public class MovementManager : MonoBehaviour {
         movementController.SetJumpSpeed(newJumpValue);
     }
 
+    bool isFalling;
+    float timeFalling = 0;
+    void LateUpdate() {
+        isFalling = movementController.IsFalling();
+        if (isFalling) {
+            timeFalling += Time.deltaTime;
+        }
+        else {
+            timeFalling = 0;
+        }
+    }
+
+    public bool IsFalling(float requiredTimeFalling) {
+        return !PlayerManager.instance.IsGrounded() && isFalling && timeFalling > requiredTimeFalling;
+    }
+
     // KNOCKBACK
     public void StartKnockback() {
         StartCoroutine(SetKnockback(-PlayerManager.instance.GetAttackDirection()));
