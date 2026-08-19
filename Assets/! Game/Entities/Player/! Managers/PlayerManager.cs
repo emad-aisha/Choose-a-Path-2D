@@ -1,10 +1,10 @@
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
+
 public class PlayerManager : MonoBehaviour {
     public static PlayerManager instance;
 
-    //("Player Data")
+    [SerializeField] BoxCollider2D playerCollider;
     float colliderWidth;
     float colliderHeight;
 
@@ -17,8 +17,8 @@ public class PlayerManager : MonoBehaviour {
         if (instance == null) instance = this;
         HorizontalFacingDirectionManager.instance.ChangeDirection += FlipPlayer;
 
-        colliderWidth = GetComponent<BoxCollider2D>().bounds.size.x;
-        colliderHeight = GetComponent<BoxCollider2D>().bounds.size.y;
+        colliderWidth = playerCollider.bounds.size.x;
+        colliderHeight = playerCollider.bounds.size.y;
     }
     void OnDisable() {
         HorizontalFacingDirectionManager.instance.ChangeDirection -= FlipPlayer;
@@ -36,6 +36,8 @@ public class PlayerManager : MonoBehaviour {
     }
 
     public Health GetHealth() { return MovementManager.instance.GetHealth(); }
+
+    public BoxCollider2D GetCollider() { return playerCollider; }
 
     // TRIGGERS
     public ref Trigger GetBody() { return ref body; }

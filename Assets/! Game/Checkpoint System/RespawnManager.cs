@@ -24,7 +24,7 @@ public class RespawnManager : MonoBehaviour {
 
     // EVENTS
     void StartRespawn() {
-        Debug.Log("respawn?");
+        Debug.Log("Respawn");
         StartCoroutine(Respawn());
     }
 

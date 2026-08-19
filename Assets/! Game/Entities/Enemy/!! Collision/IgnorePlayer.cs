@@ -4,7 +4,7 @@ using UnityEngine;
 public class IgnorePlayer : MonoBehaviour {
 
     void Start() {
-        Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), PlayerManager.instance.gameObject.GetComponent<Collider2D>());
+        Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), PlayerManager.instance.GetCollider());
     }
 
 }
