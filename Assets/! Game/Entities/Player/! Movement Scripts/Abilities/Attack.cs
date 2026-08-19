@@ -48,13 +48,11 @@ public class Attack : Input {
 
             // if facing down and not on ground OR facing up
             if ((roundedY < 0 && !PlayerManager.instance.IsGrounded()) || roundedY > 0) {
-                Debug.Log("vertical attack");
                 hitBox.transform.position += new Vector3(0, roundedY * verticalAttackOffset);
                 attackDirection.x = 0;
                 attackDirection.y = roundedY;
             }
             else {
-                Debug.Log("grounded forced sideways attack");
                 // attack horizontally
                 hitBox.transform.position += new Vector3(HorizontalFacingDirectionManager.instance.GetDirection() * attackOffset, 0);
                 attackDirection.x = HorizontalFacingDirectionManager.instance.GetDirection();
@@ -63,7 +61,6 @@ public class Attack : Input {
         }
         else {
             // attack horizontally
-            Debug.Log("default attack");
             hitBox.transform.position += new Vector3(HorizontalFacingDirectionManager.instance.GetDirection() * attackOffset, 0);
             attackDirection.x = HorizontalFacingDirectionManager.instance.GetDirection();
             attackDirection.y = 0;

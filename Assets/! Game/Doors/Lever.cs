@@ -8,6 +8,8 @@ public class Lever : MonoBehaviour {
     [SerializeField] Door doorToToggle;
 
     void Start() {
+        SetDefaults();
+
         health.Die += Flip;
     }
 
@@ -19,5 +21,15 @@ public class Lever : MonoBehaviour {
         gameObject.tag = "Trigger";
         doorToToggle.SetNotOpen();
     }
+
+
+    void SetDefaults() {
+        health = GetComponent<Health>();
+
+        GetComponent<BoxCollider2D>().isTrigger = true;
+        tag = "Enemy";
+        health.SetMaxHealth(1);
+    }
+
 
 }

@@ -63,6 +63,7 @@ public class Health : MonoBehaviour {
         }
     }
 
+    public void SetMaxHealth(int value) { maxHealth = value; }
 
     // TIMERS
     IEnumerator StartIFrame() {

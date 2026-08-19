@@ -1,16 +1,20 @@
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Door : MonoBehaviour {
     [Header("Basic Stats")]
-    [SerializeField] BoxCollider2D boxCollider;
-    [SerializeField] SpriteRenderer sprite;
     [SerializeField] bool isOpen;
+
+    BoxCollider2D boxCollider;
+    SpriteRenderer sprite;
 
     public delegate void OpenEvent();
     event OpenEvent Open;
 
     void Start() {
+        SetDefaults();
+
         Open += StartOpen;
         SetOpen(isOpen);
     }
@@ -39,5 +43,11 @@ public class Door : MonoBehaviour {
         else gameObject.tag = "Untagged";
 
     }
+
+    void SetDefaults() {
+        boxCollider = GetComponent<BoxCollider2D>();
+        sprite = GetComponent<SpriteRenderer>();
+    }
+
 
 }

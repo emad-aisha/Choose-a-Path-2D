@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5600385998098827245}
   - component: {fileID: 8652246142844598237}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Vertical Face Direction Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 1742290519875785011}
   - component: {fileID: 5895968327905318480}
   - component: {fileID: 5315602659876234230}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Checkpoint Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 467627431372039024}
   - component: {fileID: 4309800301221798451}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Input Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4235363097890373846}
   - component: {fileID: 7443206784064826986}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Horiziontal Face Direction Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,7 +205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8400058213171267505}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}

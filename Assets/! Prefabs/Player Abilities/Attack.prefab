@@ -203,3 +203,4 @@ MonoBehaviour:
   hitBox: {fileID: 1763872948973000183}
   timeOnScreen: 0.1
   attackOffset: 1
+  verticalAttackOffset: 1.5
